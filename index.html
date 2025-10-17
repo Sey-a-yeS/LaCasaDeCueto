@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>La Casa De Cueto — Book & Review</title>
+
+  <!-- Inter font (Clean, modern look) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <style>
+    /* ----------------------------------------------------------------
+     * style.css — Refined Design (Modern Booking Platform Aesthetic)
+     * ---------------------------------------------------------------- */
+
+    :root{
+      /* Main Earthy Theme */
+      --accent: #A68A6B; /* Muted Gold/Brown for action */
+      --primary-text: #2c3e50; /* Dark blue-grey for readability */
+      --secondary-text: #7f8c8d; /* Muted grey */
+      --bg-light: #f9f9f9; /* Near white background */
+      --bg-page: #f0f4f7; /* Very light subtle page background */
+      --card-bg: #FFFFFF;
+      --shadow: rgba(0, 0, 0, 0.08); /* Softer, wider shadow */
+      --success: #2ecc71;
+      --error: #e74c3c;
+      --star-color: #f39c12; /* Gold for ratings */
+    }
+
+    /* Base & Layout */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--primary-text);
+      background: var(--bg-page);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height: 1.6;
+    }
+
+    /* Utility */
+    .hidden { display:none !important; }
+    .wrap{ max-width:1200px; margin:0 auto; padding:32px 24px; }
+    .muted{ color:var(--secondary-text); }
+    .accent{ color:var(--accent); }
+    .border-subtle { border-top: 1px solid #ecf0f1; padding-top: 15px; margin-top: 15px; }
+    .text-success { color: var(--success); }
+    .text-error { color: var(--error); }
+
+    /* Cards */
+    .card{
+      padding:24px; border-radius:12px; background:var(--card-bg);
+      box-shadow:0 6px 16px var(--shadow);
+      border:1px solid rgba(0,0,0,0.05); /* Subtle border */
+    }
+    .form-card { padding: 28px; }
+
+    /* Header & Nav */
+    .site-header{
+      position:sticky; top:0; z-index:40;
+      backdrop-filter:saturate(150%) blur(8px);
+      background:rgba(255,255,255,0.95);
+      border-bottom:1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .header-inner{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:15px 24px;
+    }
+    .brand{ display:flex; align-items:center; cursor:pointer; }
+    .brand-logo{ width:40px; height:40px; object-fit:cover; border-radius:8px; margin-right:10px; background-color:var(--accent); }
+    .brand-text{ display:flex; flex-direction:column; line-height:1.1; font-weight:700; }
+    .brand-main{ font-size:18px; color:var(--primary-text); }
+    .brand-accent{ font-size:11px; color:var(--accent); letter-spacing:1px; text-transform:uppercase; }
+
+    .nav a{
+      text-decoration:none; color:var(--secondary-text); padding:8px 12px; margin-left:10px; border-radius:8px; transition:all 0.2s ease;
+      font-size:15px; font-weight:600;
+    }
+    .nav a:hover{ background:rgba(166, 138, 107, 0.1); color: var(--primary-text); }
+    .nav a.active{ background:var(--accent); color:white; }
+
+    @media (max-width: 600px) {
+      .header-inner { flex-direction: column; align-items: center; }
+      .nav { margin-top: 10px; display: flex; width: 100%; justify-content: space-around; }
+      .nav a { margin: 0 4px; padding: 6px 8px; font-size: 13px; }
+    }
+
+    /* Buttons */
+    .btn{
+      padding:12px 25px; border:none; border-radius:8px; cursor:pointer;
+      font-weight:700; font-size:16px; transition:all 0.2s ease; letter-spacing: 0.5px;
+    }
+    .btn.primary{ background:var(--accent); color:white; }
+    .btn.primary:hover{ background:#90775d; box-shadow: 0 4px 8px rgba(166, 138, 107, 0.4); }
+    .btn.google-btn{ background: #4285f4; color: white; display: flex; align-items: center; justify-content: center; width: 100%;}
+    .btn.google-btn:hover { background: #357ae8; }
+    .btn.google-btn i { font-size: 20px; margin-right: 10px; }
+    .btn.large-btn{ padding:14px 28px; font-size:18px; margin-top:15px; width:100%; }
+    .btn:disabled { background: #cccccc; cursor: not-allowed; }
+
+    /* Forms */
+    .form-group{ margin-bottom:18px; }
+    .form-group label{ display:block; margin-bottom:6px; font-weight:600; font-size:15px; color: var(--primary-text); }
+    .form-group input, .form-group textarea{
+      width:100%; padding:12px; border:1px solid #dcdcdc; border-radius:8px; font-size:16px;
+      transition:border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .form-group input:focus, .form-group textarea:focus{ border-color:var(--accent); outline:none; box-shadow: 0 0 0 3px rgba(166, 138, 107, 0.2); }
+    .muted-input { background-color: var(--bg-light); color: var(--secondary-text); cursor: not-allowed; }
+    .checkbox-group { display:flex; align-items:center; margin-bottom:20px; }
+    .checkbox-group input { margin-right: 12px; width: auto; transform: scale(1.1); }
+    .disclaimer { font-size: 13px; color: var(--secondary-text); margin-top: -5px; margin-bottom: 20px; padding: 0 5px;}
+
+    /* Typography */
+    .section-title{ font-size:40px; font-weight:800; text-align:center; margin-bottom:8px; color:var(--primary-text); }
+    .section-subtitle{ text-align:center; color:var(--secondary-text); margin-bottom:40px; font-size: 18px; }
+
+    /* Hero */
+    .hero-content { max-width: 500px; text-align: center; margin: 0 auto; }
+    .headline{ font-size:52px; font-weight:800; margin-bottom:15px; line-height:1.1; color:var(--primary-text); }
+    .subheadline{ font-size:20px; color:var(--secondary-text); margin-bottom:30px; }
+
+    /* Booking View (AirBnB style layout) */
+    .booking-layout{
+      display:grid; grid-template-columns:minmax(0, 2fr) minmax(0, 1fr); gap:40px;
+      align-items: flex-start;
+    }
+    @media (max-width: 900px) {
+      .booking-layout{ grid-template-columns:1fr; }
+    }
+    .booking-summary{ position: sticky; top: 100px; height: fit-content; }
+    .deposit-summary{
+      margin-top:25px; padding:25px; border:1px dashed var(--accent);
+      background-color:rgba(166, 138, 107, 0.05);
+      border-radius: 12px;
+    }
+
+    /* Auth/Profile View */
+    .auth-container { max-width: 450px; margin: 0 auto; text-align: center;}
+    .profile-form-intro { margin-bottom: 25px; color: var(--secondary-text); border-bottom: 1px solid #eee; padding-bottom: 15px; }
+
+    /* Reviews View */
+    .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .review-item { padding: 20px; margin-bottom: 15px; border-left: 5px solid var(--accent); }
+
+    /* Rating Input (Stars) */
+    .rating { display: flex; justify-content: center; direction: rtl; margin-bottom: 15px; }
+    .rating input { display: none; }
+    .rating label { font-size: 2.5rem; color: #ccc; cursor: pointer; padding: 0 5px; transition: color 0.2s;}
+    .rating input:checked ~ label,
+    .rating label:hover,
+    .rating label:hover ~ label { color: var(--star-color); }
+
+    /* Footer */
+    .site-footer{ padding:25px 0; text-align:center; color:var(--secondary-text); border-top:1px solid rgba(0,0,0,0.05); margin-top: 40px;}
+
+    /* Modal */
+    .modal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.7); z-index: 1000;
+      display: flex; justify-content: center; align-items: center;
+      opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+    }
+    .modal.show { opacity: 1; pointer-events: auto; }
+    .modal-card {
+      background: white; padding: 40px; border-radius: 16px;
+      width: 90%; max-width: 500px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+      transform: translateY(-30px); transition: transform 0.3s ease;
+    }
+    .modal.show .modal-card { transform: translateY(0); }
+    .modal-card h3, .modal-card h4 { margin-top: 0; text-align: center; }
+
+    /* Payment modal specific */
+    .credit-card-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    .cc-full-width { grid-column: 1 / -1; }
+    .cc-icon-list { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; color: var(--secondary-text); font-size: 1.5rem; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER / NAV -->
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <div class="brand" onclick="window.showView('home')" role="button" aria-label="Go to home">
+        <img src="images/logo.png" onerror="this.src='https://placehold.co/40x40/A68A6B/FFFFFF?text=LCC'" alt="La Casa De Cueto Logo" class="brand-logo" />
+        <div class="brand-text">
+          <span class="brand-main">La Casa</span>
+          <span class="brand-accent">De Cueto</span>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#home" class="nav-link" data-view="home" onclick="window.showView('home')">Home</a>
+        <a href="#rooms" class="nav-link" data-view="rooms" onclick="window.showView('rooms')">Rooms</a>
+        <a href="#reviews" class="nav-link" data-view="reviews" onclick="window.showView('reviews')">Reviews</a>
+        <a href="#booking" class="nav-link" data-view="booking" onclick="window.showView('booking')">Booking</a>
+        <a href="#contact" class="nav-link" data-view="contact" onclick="window.showView('contact')">Contact</a>
+        <a href="#login" class="nav-link" data-view="login" id="login-nav-link" onclick="window.showView('login')">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME VIEW (Unchanged) -->
+    <section id="home" class="view">
+      <div class="wrap">
+        <div class="hero card">
+          <div class="hero-content">
+            <h1 class="headline">Escape to Tranquility in Panglao, Bohol</h1>
+            <p class="subheadline">Experience the authentic charm and comfort of La Casa De Cueto.</p>
+            <button class="btn primary cta-btn" onclick="window.showView('rooms')">View Our Rooms</button>
+          </div>
+        </div>
+
+        <div class="about-place card" style="margin-top: 40px; padding: 40px;">
+          <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">Your Perfect Island Retreat</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+            <div><span class="accent">⭐</span> <strong>Prime Location:</strong> Close to Alona Beach.</div>
+            <div><span class="accent">📶</span> <strong>High-Speed Wi-Fi:</strong> Stay connected effortlessly.</div>
+            <div><span class="accent">✨</span> <strong>Daily Housekeeping:</strong> Enjoy a flawless stay.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- LOGIN/AUTH VIEW (Kept as a dedicated link, but booking flow uses a modal) -->
+    <section id="login" class="view hidden">
+        <div class="wrap auth-container">
+            <h2 class="section-title">Account Access (Dedicated Page)</h2>
+            <p class="section-subtitle" id="login-instruction">Use this page to manage your account or sign in if you aren't booking right now.</p>
+
+            <div id="auth-main-panel" class="card form-card">
+                <button class="btn google-btn" onclick="window.handleGoogleLogin(false)">
+                    <i class="fab fa-google"></i> LOG IN TO GOOGLE ACCOUNT
+                </button>
+                <p class="login-note text-error">
+                    <i class="fas fa-exclamation-triangle"></i> Google login may be blocked here. Anonymous sign-in will happen automatically.
+                </p>
+            </div>
+
+            <div id="profile-form-panel" class="card form-card hidden" style="text-align: left;">
+                <p class="profile-form-intro">Welcome, <strong id="profile-welcome-name">Guest!</strong> Please provide a few extra details.</p>
+                <form id="profileFormPage">
+                    <div class="form-group"><label for="profileNamePage">Full Name</label><input type="text" id="profileNamePage" required disabled class="muted-input"></div>
+                    <div class="form-group"><label for="profileEmailPage">Email</label><input type="email" id="profileEmailPage" required disabled class="muted-input"></div>
+                    <div class="form-group"><label for="profilePhonePage">Phone Number (Mandatory)</label><input type="tel" id="profilePhonePage" required placeholder="+63 9XX XXX XXXX"></div>
+                    <div class="form-group"><label for="profileDetailsPage">Other Details</label><textarea id="profileDetailsPage" rows="3"></textarea></div>
+                    <button type="submit" class="btn primary large-btn">Complete Profile & Continue</button>
+                </form>
+            </div>
+            <div id="authStatus" class="card muted" style="margin-top: 20px;">Initializing Session...</div>
+        </div>
+    </section>
+
+    <!-- ROOMS VIEW (Unchanged) -->
+    <section id="rooms" class="view hidden">
+      <div class="wrap">
+        <h2 class="section-title">Our Exclusive Rooms</h2>
+        <p class="section-subtitle">We offer two intimate rooms for a quiet and comfortable stay, each at ₱2,500/night.</p>
+
+        <div class="room-grid">
+
+          <div class="room-card card" data-room-code="room1" onclick="window.selectRoom('room1'); window.showView('booking')">
+            <img src="https://placehold.co/400x250/A68A6B/FFFFFF?text=Room+1+Queen+Bed" alt="Photo of Room 1" />
+            <div class="room-details">
+              <h3>Room 1 (Queen Bed)</h3>
+              <p class="muted">A cozy, well-appointed room featuring a comfortable queen-sized bed and modern amenities.</p>
+              <ul class="specs">
+                <li><small>👥 Max Guests: 2</small></li>
+                <li><small>💰 Rate: ₱2,500/night</small></li>
+              </ul>
+              <button class="btn primary" style="pointer-events: none;">Book Now</button>
+            </div>
+          </div>
+
+          <div class="room-card card" data-room-code="room2" onclick="window.selectRoom('room2'); window.showView('booking')">
+            <img src="https://placehold.co/400x250/A68A6B/FFFFFF?text=Room+2+Twin+Beds" alt="Photo of Room 2" />
+            <div class="room-details">
+              <h3>Room 2 (Twin Beds)</h3>
+              <p class="muted">Ideal for friends or family, this room offers two single twin beds and a small private balcony.</p>
+              <ul class="specs">
+                <li><small>👥 Max Guests: 2</small></li>
+                <li><small>💰 Rate: ₱2,500/night</small></li>
+              </ul>
+              <button class="btn primary" style="pointer-events: none;">Book Now</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- BOOKING VIEW -->
+    <section id="booking" class="view hidden">
+      <div class="wrap booking-layout">
+        <!-- LEFT: Booking Form -->
+        <div class="booking-form-container">
+          <h2 style="text-align: left; font-size: 32px; margin-bottom: 5px;">Confirm Your Reservation</h2>
+          <p style="text-align: left; margin-top: 0; margin-bottom: 5px; color: var(--secondary-text);">You are reserving <strong class="accent" id="selected-room">Room 1 (Queen Bed)</strong>.</p>
+          <p id="selected-room-info" style="margin-bottom: 30px;">Maximum Guests: 2</p>
+
+          <form id="bookingForm" class="card form-card">
+            <p style="font-style: italic; color: #e67e22; margin-bottom: 25px;">
+                You will finalize payment and log in on the next step.
+            </p>
+            <div class="form-group">
+                <label for="name">Full Name (Contact)</label>
+                <input type="text" id="name" required placeholder="John Dela Cruz">
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" required placeholder="john@example.com">
+            </div>
+
+            <div class="form-group">
+              <label for="checkin">Check-in Date</label>
+              <input type="date" id="checkin" required onchange="window.initBookingDates(); window.recalcSummary()">
+            </div>
+            <div class="form-group">
+              <label for="checkout">Check-out Date</label>
+              <input type="date" id="checkout" required onchange="window.initBookingDates(); window.recalcSummary()">
+            </div>
+
+            <div class="form-group">
+              <label for="nights">Nights</label>
+              <input type="number" id="nights" value="1" min="1" readonly class="muted-input">
+            </div>
+
+            <div class="form-group">
+              <label for="guests">Number of Guests (Max 2)</label>
+              <input type="number" id="guests" value="2" min="1" max="2" required onchange="window.recalcSummary()">
+            </div>
+
+            <div class="border-subtle">
+              <div class="checkbox-group">
+                <input type="checkbox" id="airport" name="airport" onchange="window.recalcSummary()">
+                <label for="airport">Add Airport Pickup (₱300 one-time fee)</label>
+              </div>
+            </div>
+
+            <div class="checkbox-group" style="margin-top: 20px;">
+              <input type="checkbox" id="fullPayment" name="fullPayment" value="full" onchange="window.recalcSummary()">
+              <label for="fullPayment">Pay Full Amount Now (Recommended)</label>
+            </div>
+
+            <p class="disclaimer">A non-refundable 50% deposit is required to secure the reservation, unless you choose to pay in full.</p>
+
+            <button type="submit" class="btn primary large-btn">Proceed to Payment & Login</button>
+          </form>
+        </div>
+
+        <!-- RIGHT: Price Summary (Sticky) -->
+        <div class="booking-summary">
+          <h3 class="summary-title" style="font-size: 24px;">Price Details</h3>
+          <div class="card price-summary" style="padding: 20px;">
+            <p>Room Price (Per Night): <span id="room-price-display" class="accent">₱2,500</span></p>
+            <p>Nights: <span id="summary-nights">1</span></p>
+
+            <p class="border-subtle">Subtotal: <span id="summary-subtotal">₱2,500</span></p>
+            <p>Airport Fee: <span id="summary-airport-fee">₱0</span></p>
+
+            <p class="summary-line" style="font-weight: 800; font-size: 20px; padding: 15px 0;">Total Booking Amount: <span id="summary-total" class="accent">₱2,500</span></p>
+
+            <div class="deposit-summary">
+              <p style="font-weight: 700; font-size: 1.1em;">Payment Due Today: <span id="deposit-required" class="accent">₱1,250</span></p>
+              <p class="muted" id="balance-line" style="font-size: 0.9em;">Balance Due at Check-in: <span id="balance-due">₱1,250</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS VIEW (Unchanged) -->
+    <section id="reviews" class="view hidden">
+        <div class="wrap">
+            <h2 class="section-title">Guest Experiences</h2>
+            <p class="section-subtitle">Read what others have said or share your own memorable stay!</p>
+
+            <div style="display: grid; grid-template-columns: 1fr; gap: 30px;">
+                <!-- Review Submission Form -->
+                <div class="card form-card">
+                    <h3 style="margin-top: 0; font-size: 24px; text-align: center;">Share Your Experience</h3>
+                    <form id="reviewForm">
+                        <div class="form-group" style="text-align: center;">
+                            <label style="margin-bottom: 15px;">Your Rating</label>
+                            <div class="rating">
+                                <input type="radio" name="rating" id="star5" value="5" required><label for="star5" title="5 stars"><i class="fa fa-star"></i></label>
+                                <input type="radio" name="rating" id="star4" value="4"><label for="star4" title="4 stars"><i class="fa fa-star"></i></label>
+                                <input type="radio" name="rating" id="star3" value="3"><label for="star3" title="3 stars"><i class="fa fa-star"></i></label>
+                                <input type="radio" name="rating" id="star2" value="2"><label for="star2" title="2 stars"><i class="fa fa-star"></i></label>
+                                <input type="radio" name="rating" id="star1" value="1"><label for="star1" title="1 star"><i class="fa fa-star"></i></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reviewTitle">Review Title</label>
+                            <input type="text" id="reviewTitle" required placeholder="Amazing Stay in Bohol!">
+                        </div>
+                        <div class="form-group">
+                            <label for="reviewText">Your Detailed Review</label>
+                            <textarea id="reviewText" rows="5" required placeholder="The service was exceptional..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="reviewMedia">Upload Media (Image/Video)</label>
+                            <input type="file" id="reviewMedia" accept="image/*,video/*">
+                            <p class="disclaimer">Note: Media files are not stored in this demo. Only text and rating will be saved.</p>
+                        </div>
+                        <button type="submit" class="btn primary large-btn" id="submitReviewBtn" disabled>Submit Review</button>
+                        <p id="review-auth-message" class="muted text-error" style="text-align: center; margin-top: 15px; font-weight: 600;">You must be logged in to submit a review.</p>
+                    </form>
+                </div>
+
+                <!-- Existing Reviews Display -->
+                <div>
+                    <h3 style="font-size: 24px; margin-top: 0;">What Guests Are Saying</h3>
+                    <div id="reviews-list" class="review-grid">
+                        <p class="muted" id="reviews-loading">Loading reviews...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CONTACT VIEW (Unchanged) -->
+    <section id="contact" class="view hidden">
+      <div class="wrap">
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="section-subtitle">We are here to help plan your perfect stay in Bohol.</p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px; margin-bottom:30px">
+          <div class="card contact-card">
+            <h4 style="color: var(--accent);">Contact Details</h4>
+            <p style="font-size: 1.1em;">Email: <strong>lacasadecueto@example.com</strong></p>
+            <p style="font-size: 1.1em;">Phone: <strong>+63 9XX XXX XXXX</strong></p>
+          </div>
+          <div class="card contact-card">
+            <h4 style="color: var(--accent);">Our Location</h4>
+            <ul class="muted" style="list-style: none; padding-left: 0; line-height: 2;">
+              <li>🏝️ Alona Beach — ~15 mins drive</li>
+              <li>✈️ Panglao International Airport — ~20 mins drive</li>
+              <li>🛵 Scooter Rental Service — Available On-site</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card" style="padding: 0; margin-bottom: 30px;">
+          <iframe src="https://www.google.com/maps?q=alona+beach+bohol&output=embed" style="width:100%; min-height:400px; border:0; border-radius:10px" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+        <div class="card form-card">
+            <h4 style="font-size: 20px; margin-bottom: 25px;">Send Us a Message</h4>
+            <form id="messageForm">
+                <div class="form-group">
+                    <label for="contactName">Your Name</label>
+                    <input type="text" id="contactName" required placeholder="Full Name">
+                </div>
+                <div class="form-group">
+                    <label for="contactEmail">Your Email</label>
+                    <input type="email" id="contactEmail" required placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <label for="contactMessage">Message</label>
+                    <textarea id="contactMessage" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn primary">Send Inquiry</button>
+            </form>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small>© 2025 La Casa De Cueto. All rights reserved.</small>
+      <div id="user-id-display" class="muted"></div>
+      <button class="btn" style="background: #e74c3c; color: white; font-size: 0.8rem; margin-top: 10px;" onclick="window.handleLogout()">Log Out</button>
+    </div>
+  </footer>
+
+  <!-- ----------------------------------------------------------------
+   * MODALS
+   * ---------------------------------------------------------------- -->
+
+  <!-- 1. CONFIRMATION MODAL (Final success message) -->
+  <div id="confirmationModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card">
+      <h3 class="text-success">Reservation Success!</h3>
+      <p id="confText" class="muted">Your booking has been confirmed! We will contact you soon. Please download your receipt.</p>
+      <p id="orderRef" style="font-weight: 700; color: var(--primary-text); font-size: 1.1rem; padding: 12px; background-color: var(--bg-light); border-radius: 8px; display: block; margin-top: 20px; word-break: break-all;"></p>
+      <div style="margin-top: 30px; display: flex; justify-content: space-around; gap: 15px;">
+        <button class="btn" style="background: #95a5a6; color: white; flex: 1;" onclick="window.closeModal('confirmationModal')">Close</button>
+        <button class="btn primary" style="background: var(--success); flex: 1;" onclick="window.downloadReceipt()">Download Receipt</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. PAYMENT METHOD MODAL (New Step 1) -->
+  <div id="paymentModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card">
+        <h3 class="accent">Payment Method</h3>
+        <p class="muted">Total Due Today: <strong class="accent" id="payment-amount">₱1,250</strong> (50% Deposit)</p>
+        <div class="cc-icon-list">
+            <i class="fab fa-cc-visa"></i>
+            <i class="fab fa-cc-mastercard"></i>
+            <i class="fab fa-cc-amex"></i>
+        </div>
+        <form id="paymentForm">
+            <div class="form-group cc-full-width">
+                <label for="cardName">Name on Card</label>
+                <input type="text" id="cardName" required placeholder="John D. Cruz">
+            </div>
+            <div class="form-group cc-full-width">
+                <label for="cardNumber">Card Number (16 Digits)</label>
+                <input type="text" id="cardNumber" required placeholder="XXXX XXXX XXXX XXXX" maxlength="16">
+            </div>
+            <div class="form-group">
+                <label for="cardExpiry">Expiry Date</label>
+                <input type="text" id="cardExpiry" required placeholder="MM/YY" maxlength="5">
+            </div>
+            <div class="form-group">
+                <label for="cardCVC">CVC</label>
+                <input type="text" id="cardCVC" required placeholder="123" maxlength="3">
+            </div>
+            <div class="cc-full-width" style="margin-top: 25px;">
+                <button type="submit" class="btn primary large-btn">FINISH PAYMENT (Demo)</button>
+            </div>
+        </form>
+    </div>
+  </div>
+
+  <!-- 3. AUTHENTICATION REQUIRED MODAL (New Step 2: Login/Profile) -->
+  <div id="authRequiredModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card" id="auth-modal-card">
+        <h3 class="text-error" id="auth-modal-title">Authentication Required</h3>
+        <p class="muted" id="auth-modal-instruction">Your payment is being held. Please log in or sign up to finalize and confirm your reservation!</p>
+
+        <!-- Login/Sign Up Buttons (Initial state) -->
+        <div id="auth-modal-panel">
+            <button class="btn google-btn" onclick="window.handleGoogleLogin(true)">
+                <i class="fab fa-google"></i> LOG IN WITH GOOGLE ACCOUNT
+            </button>
+            <p class="login-note text-error" style="margin-top: 15px;">
+                <i class="fas fa-exclamation-triangle"></i> Note: Google login may be blocked. Please ensure your profile details are complete after signing in.
+            </p>
+        </div>
+
+        <!-- Profile Completion Form (State after login) -->
+        <div id="profile-modal-form-panel" class="hidden" style="text-align: left; margin-top: 30px;">
+            <p class="profile-form-intro">Welcome, <strong id="profile-modal-welcome-name">Guest!</strong> Please provide a phone number to complete your profile and confirm booking.</p>
+            <form id="profileFormModal">
+                <div class="form-group"><label for="profileNameModal">Full Name</label><input type="text" id="profileNameModal" required disabled class="muted-input"></div>
+                <div class="form-group"><label for="profileEmailModal">Email</label><input type="email" id="profileEmailModal" required disabled class="muted-input"></div>
+                <div class="form-group"><label for="profilePhoneModal">Phone Number (Mandatory)</label><input type="tel" id="profilePhoneModal" required placeholder="+63 9XX XXX XXXX"></div>
+                <div class="form-group"><label for="profileDetailsModal">Other Details</label><textarea id="profileDetailsModal" rows="3"></textarea></div>
+                <button type="submit" class="btn primary large-btn">Confirm Booking & Complete Profile</button>
+            </form>
+        </div>
+
+    </div>
+  </div>
+
+  <!-- 4. GENERIC MESSAGE MODAL (For errors/simple messages) -->
+  <div id="messageModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card">
+      <h3 id="messageTitle" class="accent">Notification</h3>
+      <p id="messageText" class="muted">Your action was completed successfully.</p>
+      <div style="margin-top: 30px;">
+        <button class="btn primary" onclick="window.closeModal('messageModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ----------------------------------------------------------------
+   * CORE UI LOGIC
+   * ---------------------------------------------------------------- -->
+  <script>
+    // --- APPLICATION STATE & CONSTANTS ---
+    window.ROOMS = {
+      room1: { name: 'Room 1 (Queen Bed)', price: 2500, maxGuests: 2 },
+      room2: { name: 'Room 2 (Twin Beds)', price: 2500, maxGuests: 2 },
+    };
+    window.AIRPORT_FEE = 300;
+    window.selectedRoomCode = 'room1';
+    window.isAuthenticated = false;
+    window.isProfileComplete = false;
+    window.pendingBookingData = null; // Holds booking data after payment, before login
+
+    // --- UTILITIES ---
+    window.currency = function(n) {
+      if (typeof n !== 'number' || isNaN(n) || n < 0) return '₱' + 0;
+      return '₱' + n.toLocaleString('en-PH', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
+    }
+    window.dateDiffDays = function(date1, date2) {
+      const a = new Date(date1);
+      const b = new Date(date2);
+      a.setHours(12, 0, 0, 0); b.setHours(12, 0, 0, 0);
+      const msPerDay = 24 * 60 * 60 * 1000;
+      const diff = Math.round((b.getTime() - a.getTime()) / msPerDay);
+      return diff > 0 ? diff : 0;
+    }
+    window.getTodayDateString = function() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    // --- VIEW / NAVIGATION ---
+
+    window.showView = function(id) {
+      document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+      const target = document.getElementById(id);
+      if (target) target.classList.remove('hidden');
+
+      // Update nav active state
+      document.querySelectorAll('.nav-link').forEach(a => {
+        if (a.dataset.view === id) a.classList.add('active');
+        else a.classList.remove('active');
+      });
+
+      window.location.hash = id;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.selectRoom = function(code) {
+      if (!window.ROOMS[code]) return;
+      window.selectedRoomCode = code;
+
+      const roomData = window.ROOMS[code];
+      const selEl = document.getElementById('selected-room');
+      const infoEl = document.getElementById('selected-room-info');
+      const guestsInput = document.getElementById('guests');
+      const roomPriceDisplay = document.getElementById('room-price-display');
+
+      if (selEl) selEl.textContent = roomData.name;
+      if (infoEl) infoEl.textContent = `Maximum Guests: ${roomData.maxGuests}`;
+      if (roomPriceDisplay) roomPriceDisplay.textContent = window.currency(roomData.price);
+
+      if (guestsInput) {
+        guestsInput.max = roomData.maxGuests;
+        if (parseInt(guestsInput.value) > roomData.maxGuests) {
+            guestsInput.value = roomData.maxGuests;
+        }
+      }
+      window.recalcSummary();
+    }
+
+    window.initBookingDates = function() {
+        const checkinInput = document.getElementById('checkin');
+        const checkoutInput = document.getElementById('checkout');
+        const today = window.getTodayDateString();
+        checkinInput.min = today;
+
+        if (!checkinInput.value || new Date(checkinInput.value) < new Date(today)) {
+            checkinInput.value = today;
+        }
+
+        const checkinDate = new Date(checkinInput.value);
+        const checkinPlusOne = new Date(checkinDate.getTime() + 24 * 60 * 60 * 1000);
+        const checkinPlusOneString = checkinPlusOne.toISOString().split('T')[0];
+        checkoutInput.min = checkinPlusOneString;
+
+        if (!checkoutInput.value || new Date(checkoutInput.value) <= checkinDate) {
+            checkoutInput.value = checkinPlusOneString;
+        }
+    }
+
+
+    window.recalcSummary = function() {
+      const checkin = document.getElementById('checkin')?.value;
+      const checkout = document.getElementById('checkout')?.value;
+      const nightsEl = document.getElementById('nights');
+      const airportChecked = document.getElementById('airport')?.checked;
+      const fullPaymentChecked = document.getElementById('fullPayment')?.checked;
+      const balanceLine = document.getElementById('balance-line');
+      const bookingForm = document.getElementById('bookingForm');
+      const submitButton = bookingForm ? bookingForm.querySelector('button[type="submit"]') : null;
+      const paymentAmountDisplay = document.getElementById('payment-amount');
+
+      const roomData = window.ROOMS[window.selectedRoomCode];
+      if (!checkin || !checkout || !roomData) return;
+
+      const nights = window.dateDiffDays(checkin, checkout);
+      const roomPrice = roomData.price;
+      const subtotal = nights * roomPrice;
+      const airportFee = airportChecked ? window.AIRPORT_FEE : 0;
+      const totalAmount = subtotal + airportFee;
+
+      let isValid = true;
+      let buttonText = 'Proceed to Payment & Login';
+      if (nights <= 0) { isValid = false; buttonText = 'Invalid Dates Selected (0 Nights)'; }
+
+      let depositRequired = Math.round(totalAmount / 2);
+      let balanceDue = totalAmount - depositRequired;
+
+      if (fullPaymentChecked) {
+        depositRequired = totalAmount;
+        balanceDue = 0;
+      }
+
+      // --- Update UI elements ---
+      if (nightsEl) nightsEl.value = nights;
+      document.getElementById('summary-nights').textContent = nights;
+      document.getElementById('summary-subtotal').textContent = window.currency(subtotal);
+      document.getElementById('summary-airport-fee').textContent = window.currency(airportFee);
+      document.getElementById('summary-total').textContent = window.currency(totalAmount);
+      document.getElementById('deposit-required').textContent = window.currency(depositRequired);
+      document.getElementById('balance-due').textContent = window.currency(balanceDue);
+      if (paymentAmountDisplay) paymentAmountDisplay.textContent = window.currency(depositRequired);
+
+      if (balanceLine) {
+        if (fullPaymentChecked) balanceLine.classList.add('hidden');
+        else balanceLine.classList.remove('hidden');
+      }
+
+      if (submitButton) {
+        submitButton.disabled = !isValid;
+        submitButton.textContent = buttonText;
+      }
+    }
+
+    // --- MODAL FUNCTIONS ---
+
+    window.showModal = function(id, title, text, ref, isError = false) {
+        const modal = document.getElementById(id);
+        if (!modal) return;
+
+        const titleEl = modal.querySelector('#messageTitle') || modal.querySelector('#auth-modal-title') || modal.querySelector('h3');
+        const textEl = modal.querySelector('#messageText') || modal.querySelector('#auth-modal-instruction') || modal.querySelector('#confText');
+        const refEl = modal.querySelector('#orderRef');
+
+        if (titleEl && title) {
+            titleEl.textContent = title;
+            titleEl.className = isError ? 'text-error' : 'text-success';
+        }
+        if (textEl && text) textEl.textContent = text;
+        if (refEl) {
+            if (ref) {
+                refEl.textContent = `Reference: ${ref}`;
+                refEl.classList.remove('hidden');
+            } else {
+                refEl.classList.add('hidden');
+            }
+        }
+
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+    };
+
+    window.closeModal = function(id) {
+        const modal = document.getElementById(id);
+        if (!modal) return;
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+    };
+
+    window.downloadReceipt = function() {
+      const refEl = document.getElementById('orderRef');
+      const refText = refEl?.textContent || 'NO_REF';
+      const total = document.getElementById('summary-total').textContent;
+      const deposit = document.getElementById('deposit-required').textContent;
+      const text = `
+--------------------------------------------------
+LA CASA DE CUETO BOOKING CONFIRMATION (DEMO)
+--------------------------------------------------
+${refText}
+Date: ${new Date().toLocaleDateString()}
+Status: Deposit Processed (Demo)
+Booking Details:
+- Room: ${document.getElementById('selected-room').textContent}
+- Nights: ${document.getElementById('nights').value}
+- Total Amount: ${total}
+- Deposit Paid: ${deposit}
+
+NOTE: This is a simulated receipt. No real payment was processed.
+--------------------------------------------------
+`;
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${refText.replace('Reference: ', 'booking_')}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+
+  </script>
+
+  <!-- ----------------------------------------------------------------
+   * FIREBASE & EVENT BINDING LOGIC (Module script block)
+   * ---------------------------------------------------------------- -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, doc, setDoc, getDoc, query, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    setLogLevel('Debug');
+
+    const APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+    const INITIAL_AUTH_TOKEN = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+    let db;
+    let auth;
+    let currentUser = null;
+    let currentUserId = null;
+    let reviewsUnsubscribe = null;
+
+    function uid() {
+      return 'LC-' + Math.random().toString(36).slice(2, 9).toUpperCase();
+    }
+
+    // --- FIREBASE PATH HELPERS ---
+    function getUserProfileDocRef(userId) {
+        return doc(db, `artifacts/${APP_ID}/users/${userId}/profile`, 'details');
+    }
+    function getBookingCollectionRef(userId) {
+        return collection(db, `artifacts/${APP_ID}/users/${userId}/bookings`);
+    }
+    function getMessageCollectionRef(userId) {
+        return collection(db, `artifacts/${APP_ID}/users/${userId}/messages`);
+    }
+    function getReviewCollectionRef() {
+        return collection(db, `artifacts/${APP_ID}/public/data/reviews`);
+    }
+
+    // --- AUTHENTICATION HANDLERS ---
+
+    // The 'isBookingFlow' flag determines if we redirect to home (false) or proceed to save pending booking (true)
+    window.handleGoogleLogin = async function(isBookingFlow) {
+        try {
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            // Auth successful, onAuthStateChanged listener handles the rest
+            console.log("Google Sign-In Success:", result.user.uid);
+        } catch (error) {
+            console.error("Google Sign-In Error:", error);
+            window.showModal('messageModal', 'Login Failed', `Could not sign in with Google: ${error.message}. Please try again later.`, null, true);
+            if (isBookingFlow) {
+                 window.closeModal('authRequiredModal');
+            }
+        }
+    }
+
+    window.handleLogout = async function() {
+        try {
+            await signOut(auth);
+            window.showView('home');
+            window.showModal('messageModal', 'Logged Out', 'You have been successfully logged out.', null, false);
+        } catch (error) {
+            console.error("Logout Error:", error);
+            window.showModal('messageModal', 'Logout Failed', 'Could not log out. Please try again.', null, true);
+        }
+    }
+
+    // --- PROFILE HANDLERS ---
+
+    // Handles logic for both the dedicated login page and the modal profile completion
+    async function checkAndHandleUserProfile(user) {
+        if (!user) {
+            window.isProfileComplete = false;
+            return;
+        }
+
+        const profileDocRef = getUserProfileDocRef(user.uid);
+        const profileSnap = await getDoc(profileDocRef);
+
+        const isComplete = profileSnap.exists();
+        window.isProfileComplete = isComplete;
+
+        // UI Updates for dedicated LOGIN PAGE
+        const authMainPanel = document.getElementById('auth-main-panel');
+        const profileFormPanel = document.getElementById('profile-form-panel');
+        if(authMainPanel && profileFormPanel) {
+            authMainPanel.classList.add('hidden');
+            profileFormPanel.classList.toggle('hidden', isComplete);
+            document.getElementById('profile-welcome-name').textContent = user.displayName || user.email;
+            document.getElementById('profileNamePage').value = user.displayName || '';
+            document.getElementById('profileEmailPage').value = user.email || '';
+        }
+
+        // Handle PENDING BOOKING flow
+        if (window.pendingBookingData && isComplete) {
+            window.closeModal('authRequiredModal');
+            // Save the booking now that the user is logged in and profile is complete
+            await savePendingBooking(user.uid, profileSnap.data());
+        } else if (window.pendingBookingData && !isComplete) {
+            // User logged in but profile is still incomplete -> show the MODAL profile form
+            showProfileModalForm(user);
+        }
+    }
+
+    // Logic to show the profile completion form inside the AUTH MODAL
+    function showProfileModalForm(user) {
+        const authPanel = document.getElementById('auth-modal-panel');
+        const profilePanel = document.getElementById('profile-modal-form-panel');
+        if(authPanel && profilePanel) {
+            authPanel.classList.add('hidden');
+            profilePanel.classList.remove('hidden');
+
+            document.getElementById('auth-modal-title').textContent = 'Complete Profile to Confirm';
+            document.getElementById('profile-modal-welcome-name').textContent = user.displayName || user.email;
+            document.getElementById('profileNameModal').value = user.displayName || '';
+            document.getElementById('profileEmailModal').value = user.email || '';
+        }
+    }
+
+    // Handles both profile form submissions (page and modal)
+    async function handleProfileFormSubmit(e) {
+        e.preventDefault();
+        if (!currentUser) return;
+
+        const isModal = e.target.id === 'profileFormModal';
+        const form = e.target;
+        const formSuffix = isModal ? 'Modal' : 'Page';
+
+        const phone = form[`profilePhone${formSuffix}`].value;
+        if (!phone) {
+             window.showModal('messageModal', 'Missing Detail', 'Phone number is required to complete your profile.', null, true);
+             return;
+        }
+
+        const profileData = {
+            fullName: form[`profileName${formSuffix}`].value,
+            email: form[`profileEmail${formSuffix}`].value,
+            phone: phone,
+            otherDetails: form[`profileDetails${formSuffix}`].value,
+            lastUpdate: new Date().toISOString()
+        };
+
+        try {
+            await setDoc(getUserProfileDocRef(currentUser.uid), profileData);
+
+            if (isModal) {
+                 window.showModal('messageModal', 'Profile Saved!', 'Profile complete. Confirming your booking now...', null, false);
+                 window.closeModal('authRequiredModal');
+                 // This will re-trigger savePendingBooking via the onAuthStateChanged listener
+                 window.isProfileComplete = true; // Mark as complete immediately
+                 await savePendingBooking(currentUser.uid, profileData);
+            } else {
+                 window.showModal('messageModal', 'Profile Saved!', 'Your account is now fully active.', null, false);
+                 await checkAndHandleUserProfile(currentUser);
+                 window.showView('home');
+            }
+        } catch (error) {
+            console.error("Error saving profile: ", error);
+            window.showModal('messageModal', 'Save Error', 'Could not save profile details.', null, true);
+        }
+    }
+
+    // --- BOOKING/PAYMENT HANDLERS ---
+
+    async function handleBookingSubmit(e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const nights = parseInt(form.nights.value, 10);
+        if (nights <= 0 || form.checkin.value >= form.checkout.value) {
+            window.showModal('messageModal', 'Input Error', 'Please select valid check-in and check-out dates (minimum 1 night).', null, true);
+            return;
+        }
+
+        const roomData = window.ROOMS[window.selectedRoomCode];
+        const airportPickup = form.airport.checked;
+        const payFull = form.fullPayment.checked;
+        const subtotal = nights * roomData.price;
+        const airportFee = airportPickup ? window.AIRPORT_FEE : 0;
+        const totalAmount = subtotal + airportFee;
+        const depositRequired = payFull ? totalAmount : Math.round(totalAmount / 2);
+
+        // 1. Gather all necessary booking data
+        window.pendingBookingData = {
+            orderRef: uid(), // Generate unique reference now
+            roomCode: window.selectedRoomCode,
+            roomName: roomData.name,
+            checkinDate: form.checkin.value,
+            checkoutDate: form.checkout.value,
+            nights,
+            guests: parseInt(form.guests.value, 10),
+            fullName: form.name.value,
+            email: form.email.value,
+            airportPickup,
+            payFull,
+            totalAmount,
+            depositRequired,
+            balanceDue: totalAmount - depositRequired,
+            timestamp: new Date().toISOString()
+        };
+
+        // 2. Show the payment modal
+        document.getElementById('payment-amount').textContent = window.currency(depositRequired);
+        document.getElementById('paymentForm').reset();
+        window.showModal('paymentModal', 'Payment Method', null, null, false);
+    }
+
+    function handlePaymentSubmit(e) {
+        e.preventDefault();
+
+        const form = e.target;
+        // Simple mock validation
+        if (form.cardNumber.value.length !== 16) {
+            window.showModal('messageModal', 'Payment Error', 'Please enter a valid 16-digit card number (demo).', null, true);
+            return;
+        }
+
+        // 1. Close payment modal
+        window.closeModal('paymentModal');
+
+        // 2. Determine next step: Login/Profile check
+        if (currentUser && window.isProfileComplete) {
+            // User is already logged in and profile is complete (unlikely in this flow, but possible if they logged in separately)
+            savePendingBooking(currentUser.uid);
+        } else if (currentUser && !window.isProfileComplete) {
+            // User is logged in but profile is missing -> show modal profile form
+            showProfileModalForm(currentUser);
+            window.showModal('authRequiredModal', 'Complete Profile to Confirm', 'Your payment is being held. Please provide a phone number to finalize your booking.', null, true);
+        } else {
+            // User is anonymous -> force login
+            document.getElementById('auth-modal-panel').classList.remove('hidden');
+            document.getElementById('profile-modal-form-panel').classList.add('hidden');
+            window.showModal('authRequiredModal', 'Authentication Required', 'Your payment is being held. Please log in or sign up to finalize and confirm your reservation!', null, true);
+        }
+    }
+
+    async function savePendingBooking(userId, profileData = {}) {
+        if (!window.pendingBookingData) return;
+
+        // Combine booking data with the confirmed user info
+        const finalBookingData = {
+            ...window.pendingBookingData,
+            userId: userId,
+            // Overwrite name/email with the authenticated user's profile data
+            fullName: profileData.fullName || window.pendingBookingData.fullName,
+            email: profileData.email || window.pendingBookingData.email,
+            phone: profileData.phone || 'N/A',
+            bookingTime: new Date().toISOString()
+        };
+
+        try {
+            await addDoc(getBookingCollectionRef(userId), finalBookingData);
+            document.getElementById('orderRef').textContent = `Reference: ${finalBookingData.orderRef}`;
+            window.showModal('confirmationModal', 'Reservation Confirmed!', null, finalBookingData.orderRef, false);
+
+            // Clean up
+            document.getElementById('bookingForm').reset();
+            window.pendingBookingData = null;
+            window.selectRoom('room1');
+            window.showView('home');
+        } catch (error) {
+            console.error("Error saving final booking: ", error);
+            window.showModal('messageModal', 'Save Error', 'Could not save your booking even after login. Please check console.', null, true);
+        }
+    }
+
+
+    // --- REVIEWS & MESSAGES (unchanged, but needs correct currentUserId) ---
+
+    function renderReviews(reviews) {
+        const listEl = document.getElementById('reviews-list');
+        listEl.innerHTML = '';
+        document.getElementById('reviews-loading')?.classList.add('hidden');
+
+        if (reviews.length === 0) {
+            listEl.innerHTML = '<p class="muted" style="grid-column: 1 / -1; text-align: center;">Be the first to leave a review!</p>';
+            return;
+        }
+        // ... (Rendering logic remains the same)
+        reviews.forEach(review => {
+            const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+            const date = review.timestamp ? new Date(review.timestamp).toLocaleDateString() : 'N/A';
+            const reviewHtml = `
+                <div class="card review-item">
+                    <div class="review-header">
+                        <p class="reviewer-info">${review.reviewerName || 'Anonymous'}<small>on ${date}</small></p>
+                        <span class="review-stars">${stars}</span>
+                    </div>
+                    <h4 class="review-title">${review.title}</h4>
+                    <p class="review-text">${review.text}</p>
+                    ${review.hasMedia ? '<p class="review-media-note"><i class="fas fa-camera"></i> Media was uploaded with this review (Demo).</p>' : ''}
+                </div>
+            `;
+            listEl.innerHTML += reviewHtml;
+        });
+    }
+
+    function setupReviewsListener() {
+        if (reviewsUnsubscribe) reviewsUnsubscribe();
+        const reviewsQuery = query(getReviewCollectionRef(), orderBy('timestamp', 'desc'));
+
+        reviewsUnsubscribe = onSnapshot(reviewsQuery, (snapshot) => {
+            const reviews = snapshot.docs.map(doc => doc.data());
+            renderReviews(reviews);
+        }, (error) => {
+            console.error("Error listening to reviews:", error);
+            document.getElementById('reviews-list').innerHTML = '<p class="text-error" style="grid-column: 1 / -1; text-align: center;">Could not load reviews. Check console for error.</p>';
+        });
+    }
+
+    async function handleReviewSubmit(e) {
+        e.preventDefault();
+
+        if (!currentUser || !window.isProfileComplete) {
+            window.showModal('messageModal', 'Authentication Required', 'You must be logged in and have a complete profile to submit a review.', null, true);
+            window.showView('login');
+            return;
+        }
+
+        const form = e.target;
+        const ratingInput = form.rating.value;
+
+        try {
+            const reviewData = {
+                userId: currentUser.uid,
+                reviewerName: currentUser.displayName || 'Guest',
+                rating: parseInt(ratingInput),
+                title: form.reviewTitle.value,
+                text: form.reviewText.value,
+                hasMedia: form.reviewMedia.files.length > 0,
+                timestamp: new Date().toISOString()
+            };
+
+            await addDoc(getReviewCollectionRef(), reviewData);
+            window.showModal('messageModal', 'Review Submitted!', 'Thank you for sharing your experience. Your review is now live.', null, false);
+            form.reset();
+            document.getElementById('star5').checked = true;
+        } catch (error) {
+            console.error("Error submitting review: ", error);
+            window.showModal('messageModal', 'Submission Error', 'Could not save your review.', null, true);
+        }
+    }
+
+    async function handleMessageSubmit(e) {
+        e.preventDefault();
+        if (!db || !currentUserId) {
+            window.showModal('messageModal', 'Error', 'The app session is not ready. Please wait a moment.', null, true);
+            return;
+        }
+        const form = e.target;
+        const messageData = {
+            userId: currentUserId,
+            name: form.contactName.value,
+            email: form.contactEmail.value,
+            message: form.contactMessage.value,
+            timestamp: new Date().toISOString()
+        };
+        try {
+            await addDoc(getMessageCollectionRef(currentUserId), messageData);
+            window.showModal('messageModal', 'Inquiry Sent!', 'Thank you! Your message has been sent successfully.', null, false);
+            form.reset();
+        } catch (error) {
+            console.error("Error saving message: ", error);
+            window.showModal('messageModal', 'Database Error', 'Could not send your message.', null, true);
+        }
+    }
+
+    // --- INITIALIZATION ---
+
+    async function updateAuthUI(user) {
+        const authStatusEl = document.getElementById('authStatus');
+        const userIdDisplayEl = document.getElementById('user-id-display');
+        const loginNavLink = document.getElementById('login-nav-link');
+        const submitReviewBtn = document.getElementById('submitReviewBtn');
+        const reviewAuthMessage = document.getElementById('review-auth-message');
+
+        if (user) {
+            currentUser = user;
+            currentUserId = user.uid;
+            authStatusEl.textContent = `Signed in as: ${user.email} (${window.isProfileComplete ? 'Profile Complete' : 'Profile Required'})`;
+            userIdDisplayEl.textContent = `User ID: ${user.uid}`;
+            loginNavLink.textContent = 'Log Out';
+            loginNavLink.onclick = window.handleLogout;
+
+            if (window.isProfileComplete) {
+                reviewAuthMessage.classList.add('hidden');
+                submitReviewBtn.disabled = false;
+            } else {
+                reviewAuthMessage.classList.remove('hidden');
+                reviewAuthMessage.textContent = 'Complete your profile to submit a review.';
+                submitReviewBtn.disabled = true;
+            }
+
+        } else {
+            // Anonymous or Logged Out
+            currentUser = null;
+            currentUserId = crypto.randomUUID(); // Anonymous ID for messages
+            window.isAuthenticated = false;
+            window.isProfileComplete = false;
+
+            authStatusEl.textContent = 'Not Signed In. Signed in anonymously for basic access.';
+            userIdDisplayEl.textContent = `Anonymous ID: ${currentUserId}`;
+            loginNavLink.textContent = 'Login';
+            loginNavLink.onclick = () => window.showView('login');
+            submitReviewBtn.disabled = true;
+            reviewAuthMessage.classList.remove('hidden');
+            reviewAuthMessage.textContent = 'You must be logged in to submit a review.';
+        }
+    }
+
+
+    async function initializeAppAndAuth() {
+      try {
+        if (Object.keys(firebaseConfig).length === 0) {
+            console.error("Firebase config is empty. Cannot initialize.");
+            document.getElementById('authStatus').textContent = 'Error: Firebase not configured.';
+            return;
+        }
+
+        const app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        auth = getAuth(app);
+        window.db = db;
+
+        // 1. Initial sign-in (uses token if provided, otherwise signs in anonymously)
+        if (INITIAL_AUTH_TOKEN) { await signInWithCustomToken(auth, INITIAL_AUTH_TOKEN); } else { await signInAnonymously(auth); }
+
+        // 2. Auth State Listener
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+             // 1. Check/handle profile status (will update window.isProfileComplete)
+             await checkAndHandleUserProfile(user);
+          } else {
+             window.isAuthenticated = false;
+             window.isProfileComplete = false;
+             // If a booking was pending but the user signed out, discard it
+             window.pendingBookingData = null;
+          }
+          // 2. Update UI based on final state
+          await updateAuthUI(user);
+        });
+
+        // 3. Setup real-time listeners for public data
+        setupReviewsListener();
+
+      } catch (error) {
+        console.error("Firebase Initialization or Authentication Error:", error);
+        document.getElementById('authStatus').textContent = `Auth Error: ${error.message}`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeAppAndAuth();
+
+      // Set initial room and dates
+      window.selectRoom(window.selectedRoomCode);
+      window.initBookingDates();
+
+      // Bind form submissions
+      document.getElementById('bookingForm')?.addEventListener('submit', handleBookingSubmit);
+      document.getElementById('paymentForm')?.addEventListener('submit', handlePaymentSubmit); // NEW STEP
+      document.getElementById('profileFormModal')?.addEventListener('submit', handleProfileFormSubmit); // NEW STEP
+      document.getElementById('profileFormPage')?.addEventListener('submit', handleProfileFormSubmit); // Existing page form
+      document.getElementById('messageForm')?.addEventListener('submit', handleMessageSubmit);
+      document.getElementById('reviewForm')?.addEventListener('submit', handleReviewSubmit);
+
+      // Set initial view
+      const initial = window.location.hash ? window.location.hash.substring(1) : 'home';
+      window.showView(initial);
+    });
+  </script>
+
+</body>
+</html>

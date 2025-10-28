@@ -18,10 +18,6 @@
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
   <style>
-    /* ==================================================
-       Gray-Orange Resort Theme — Polished UI + UX Improvements
-       (updated: Login section layout fixes)
-       ================================================== */
 
     :root{
       --accent-color: #A89984; /* Main Earthy Taupe */
@@ -604,12 +600,12 @@
           </div>
           <div class="feature-block" data-aos="zoom-in" data-aos-delay="300">
             <i class="fas fa-wifi"></i>
-            <strong>Free High-Speed Wi‑Fi</strong>
+            <strong>Free Wi‑Fi</strong>
             <p class="muted">Stay connected effortlessly.</p>
           </div>
           <div class="feature-block" data-aos="zoom-in" data-aos-delay="400">
-            <i class="fas fa-hand-sparkles"></i>
-            <strong>Daily Housekeeping</strong>
+            <i class="fas fa-mug-hot"></i>
+            <strong>Free Breakfast</strong>
             <p class="muted">Enjoy a flawless, clean stay.</p>
           </div>
           <div class="feature-block" data-aos="zoom-in" data-aos-delay="500">
@@ -642,15 +638,15 @@
 
         <div class="room-grid" data-aos="fade-up" data-aos-delay="300">
           <div class="room-card card" data-room-code="room1" onclick="selectRoom('room1'); showView('booking')" role="button" aria-label="Select Room 1">
-            <img src="https://placehold.co/800x600/B5A78B/FFFFFF?text=Room+1+Queen+Bed" alt="Photo of Room 1" loading="lazy">
+            <img src="https://placehold.co/800x600/B5A78B/FFFFFF?text=Room+1+Twin+Beds" alt="Photo of Room 1" loading="lazy">
             <div class="room-details">
-              <h3>Room 1 (Queen Bed)</h3>
+              <h3>Room 1 (Twin Beds)</h3>
               <p class="muted">A cozy, well-appointed room featuring a comfortable queen-sized bed and modern amenities for a perfect stay.</p>
               <ul class="amenities-list">
-                <li><i class="fas fa-bed"></i> Queen Bed</li>
+                <li><i class="fas fa-bed"></i> Twin Beds (x2)</li>
+                <li><i class="fas fa-door-open"></i> Private Bathroom</li>
+                <li><i class="fas fa-tv"></i> Smart TV</li>
                 <li><i class="fas fa-snowflake"></i> Air Conditioning</li>
-                <li><i class="fas fa-tv"></i> Flat Screen TV</li>
-                <li><i class="fas fa-bath"></i> Private Bathroom</li>
               </ul>
               <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
                 <span style="font-size:1.25em; font-weight:700; color:var(--accent-dark);">₱2,500<small style="font-weight:400; font-size:0.6em; color:var(--muted-text);">/night</small></span>
@@ -666,8 +662,8 @@
               <p class="muted">Ideal for friends or family, this room offers two single twin beds and a small private balcony for relaxing.</p>
               <ul class="amenities-list">
                 <li><i class="fas fa-bed"></i> Twin Beds (x2)</li>
-                <li><i class="fas fa-door-open"></i> Private Balcony</li>
-                <li><i class="fas fa-tv"></i> Flat Screen TV</li>
+                <li><i class="fas fa-door-open"></i> Private Bathroom</li>
+                <li><i class="fas fa-tv"></i> Smart TV</li>
                 <li><i class="fas fa-snowflake"></i> Air Conditioning</li>
               </ul>
               <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
@@ -1019,7 +1015,7 @@
     const ROOM_DATA = {
       room1: {
         code: 'room1',
-        title: 'Room 1 (Queen Bed)',
+        title: 'Room 1 (Twin Beds)',
         price: 2500,
         maxGuests: 2,
         images: [
@@ -1385,7 +1381,7 @@
       const images = document.querySelectorAll('#carousel-slide-container .carousel-image');
       if (!images.length) return;
       let idx = Array.from(images).findIndex(img => img.classList.contains('active'));
-      idx = (idx + 1) % images.length;
+      idx = (idx + 1) % images.lengthz;
       setActiveCarousel(idx);
     }, 4000);
   </script>

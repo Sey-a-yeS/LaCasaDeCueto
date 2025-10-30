@@ -1385,5 +1385,27 @@
       setActiveCarousel(idx);
     }, 4000);
   </script>
+
+<!-- Calendar Feature Start -->
+<div id="calendarModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-card card" style="position:relative; max-width:700px;">
+    <button class="modal-close" aria-label="Close" onclick="closeCalendar()">
+      <span>&times;</span>
+    </button>
+    <h3 style="margin-top:0; font-family:'Playfair Display', serif;">Select Your Dates</h3>
+    <div id="calendarContainer"></div>
+    <div style="text-align:right; margin-top:20px;">
+      <button class="btn primary" id="confirmDatesBtn">Confirm Dates</button>
+    </div>
+    <p class="muted" style="font-size:0.9em; margin-top:10px;">
+      Booked dates shown in <span style="color:#8B7D6C; opacity:0.6; font-weight:700;">brown</span>.
+    </p>
+  </div>
+</div>
+<!-- Calendar Feature End -->
+
+<!-- Calendar Script -->
+<script src="calendar.js" defer></script>
+
 </body>
 </html>

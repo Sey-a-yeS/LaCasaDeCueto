@@ -5,12 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>La Casa De Cueto — Book & Review</title>
   <meta name="description" content="La Casa De Cueto — family-run island stay in Panglao, Bohol. Book rooms, read guest reviews, and contact us."/>
+  <meta name="keywords" content="La Casa De Cueto, Panglao, Bohol, guesthouse, hotel, booking, reviews" />
   <meta name="theme-color" content="#A89984" />
   <meta property="og:title" content="La Casa De Cueto — Book & Review"/>
   <meta property="og:description" content="Family-run island stay in Panglao, Bohol. Book rooms, read guest reviews, and contact us."/>
   <meta property="og:image" content="https://placehold.co/1200x630/B5A78B/FFFFFF?text=La+Casa+De+Cueto" />
+  <!-- Structured data is generated dynamically from client-side reviews (see reviews-jsonld) -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" as="style" onload="this.rel='stylesheet'">
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <!-- Performance notes: convert large images to WebP and minify CSS/JS in build process (see README or build script). Preload critical fonts above to reduce layout shifts. -->
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -20,6 +25,18 @@
   <style>
 
     :root{
+      /* Spacing & type scale for consistent rhythm */
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+
+      --fs-h1: 72px;
+      --fs-h2: 52px;
+      --fs-h3: 36px;
+      --fs-body: 16px;
+
       --accent-color: #A89984; /* Main Earthy Taupe */
       --accent-dark: #8B7D6C; /* Darker Taupe/Brown for contrast */
       --accent-light: #F7F5F2; /* Very Light Off-White/Warm Gray */
@@ -164,6 +181,63 @@
       display:flex; align-items:center; gap:8px; font-size:16px;
       transition: transform .18s, background .18s, box-shadow .18s;
     }
+
+    /* Mobile hamburger and mobile nav */
+    .mobile-menu-button {
+      display:none; background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:var(--header-text); padding:10px 12px; border-radius:12px; cursor:pointer;
+    }
+    .mobile-nav-overlay {
+      position: fixed; inset: 0 0 0 0; z-index: 1000; display:none; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); align-items:flex-start; justify-content:center; padding-top:80px;
+    }
+    /* Animated mobile overlay */
+    .mobile-nav-overlay { opacity:0; visibility:hidden; transition: opacity .28s ease, visibility .28s; }
+    .mobile-nav-overlay.show { display:flex; opacity:1; visibility:visible; }
+    .mobile-nav-panel { width:100%; max-width:420px; background:var(--card-bg); border-radius:12px; padding:18px; box-shadow:0 20px 60px rgba(0,0,0,0.25); transform: translateY(-8px); transition: transform .28s var(--ease); }
+    .mobile-nav-overlay.show .mobile-nav-panel { transform: translateY(0); }
+    .mobile-nav-panel a { display:block; padding:12px 10px; border-radius:10px; color:var(--primary-text); text-decoration:none; font-weight:700; }
+
+    /* Bottom navigation for mobile */
+    .mobile-bottom-nav { display:none; position:fixed; left:50%; transform:translateX(-50%); bottom:12px; z-index:90; width:95%; max-width:480px; background:var(--card-bg); border-radius:999px; padding:8px 12px; box-shadow:0 12px 40px rgba(0,0,0,0.18); display:flex; gap:8px; justify-content:space-around; align-items:center; }
+    .mobile-bottom-nav button { background:transparent; border:none; color:var(--muted-text); display:flex; flex-direction:column; align-items:center; gap:4px; font-size:12px; cursor:pointer; }
+    .mobile-bottom-nav button.active { color:var(--accent-dark); font-weight:800; }
+
+    /* Back to top */
+    #backToTop { 
+      position:fixed; 
+      right:30px; 
+      bottom:120px; /* Move higher up */
+      z-index:95; 
+      display:none; 
+      background:var(--accent-dark); 
+      color:white; 
+      width: 45px;
+      height: 45px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      border-radius: 50%; 
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25); 
+      cursor:pointer;
+      transition: transform .2s, background-color .2s;
+    }
+    #backToTop:hover {
+      transform: translateY(-4px);
+      background: var(--accent-color);
+    }
+    @media (max-width: 768px) {
+      #backToTop {
+        right: auto;
+        left: 20px;
+        bottom: 100px;
+      }
+    }
+
+    /* Floating widget collapsed state (mobile) */
+    .floating-booking-widget .collapse-toggle { display:none; background:transparent; border:none; color:white; font-size:18px; cursor:pointer; }
+    .floating-booking-widget.collapsed { width:56px; padding:10px; overflow:hidden; }
+    .floating-booking-widget.collapsed input, .floating-booking-widget.collapsed .form-control-group { display:none; }
+    .floating-booking-widget.collapsed .collapse-toggle { display:block; }
     #dark-mode-toggle:hover { transform: scale(1.0); background: rgba(255,255,255,0.12); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     #dark-mode-toggle:active { transform: scale(0.98); }
 
@@ -178,6 +252,13 @@
       box-shadow: 0 12px 50px rgba(0,0,0,0.15); /* Deeper shadow */
       border-radius: 0 0 40px 40px; /* More pronounced radius */
     }
+  /* Hero media (video) — positioned beneath content; fallback uses existing background image */
+  .hero-media { position:absolute; inset:0; z-index:1; pointer-events:none; overflow:hidden; border-radius: 0 0 40px 40px; }
+  .hero-media video { width:100%; height:100%; object-fit:cover; display:block; transform:translateZ(0); }
+  .hero .hero-content { position:relative; z-index:10; }
+
+  /* Slight parallax effect: we'll translate the content on scroll */
+  .hero-parallax { transition: transform .15s linear; will-change: transform; }
     .hero::before{
       content: "";
       position:absolute; inset:0;
@@ -206,6 +287,25 @@
       font-size:15px; text-transform:uppercase; letter-spacing:1px; display:inline-flex;
       align-items:center; gap:10px; transition: transform .25s var(--ease), box-shadow .25s, opacity .25s;
     }
+  /* Micro-animation helpers */
+  .img-zoom { transition: transform .6s var(--ease); will-change: transform; }
+  .img-zoom:hover { transform: scale(1.06); }
+  .fade-in { opacity: 0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
+  .fade-in.show { opacity: 1; transform: translateY(0); }
+
+  /* Skeleton loader */
+  .skeleton { background: linear-gradient(90deg, #eee, #f5f5f5, #eee); background-size:200% 100%; animation: shimmer 1.2s linear infinite; border-radius:12px; }
+  @keyframes shimmer { 0% { background-position:200% 0; } 100% { background-position:-200% 0; } }
+  .skeleton.text { height:14px; margin-bottom:8px; }
+  .skeleton.img { height:220px; width:100%; display:block; }
+
+  /* Toast/snackbar */
+  .toast-container { position: fixed; right: 18px; bottom: 18px; z-index: 1300; display:flex; flex-direction:column; gap:10px; }
+  .toast { background: #111; color: #fff; padding:10px 14px; border-radius:10px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); opacity:0; transform: translateY(8px); transition: opacity .25s, transform .25s; }
+  .toast.show { opacity:1; transform: translateY(0); }
+  .toast.info { background: #333; }
+  .toast.success { background: #2ecc71; }
+  .toast.error { background: #e74c3c; }
     .btn.primary {
       background: linear-gradient(135deg, var(--accent-dark), var(--accent-color)); /* More appealing angle */
       color: white;
@@ -228,6 +328,10 @@
         box-shadow: 0 8px 20px var(--shadow-strong);
         border-color: var(--accent-color);
     }
+
+    /* spinner for buttons */
+    .btn .spinner { display:inline-block; width:16px; height:16px; border:2px solid rgba(255,255,255,0.3); border-top-color:rgba(255,255,255,0.9); border-radius:50%; animation: spin .8s linear infinite; margin-left:8px; vertical-align:middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* SECTION TITLES */
     .section-title {
@@ -300,9 +404,33 @@
         box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     }
 
-    .room-carousel-card { position:relative; height:300px; border-radius:16px; overflow:hidden; }
-    .carousel-image { width:100%; height:100%; object-fit:cover; display:block; opacity:0; transition: opacity 1s ease-in-out; }
-    .carousel-image.active { opacity:1; }
+    .room-carousel-card { 
+      position: relative; 
+      height: 300px; 
+      border-radius: 16px; 
+      overflow: hidden;
+      background: var(--accent-light);
+    }
+    .carousel-slide-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .carousel-image { 
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      pointer-events: none;
+    }
+    .carousel-image.active { 
+      opacity: 1;
+      z-index: 1;
+    }
 
     .carousel-indicators { position:absolute; bottom:15px; left:50%; transform:translateX(-50%); display:flex; gap:10px; z-index:12; }
     .carousel-indicator { width:12px;height:12px;border-radius:50%; background: rgba(255,255,255,0.75); border: 2px solid rgba(0,0,0,0.1); cursor:pointer; transition: transform .2s, background .2s; }
@@ -315,9 +443,18 @@
     input[type="text"], input[type="email"], input[type="date"], input[type="password"], input[type="number"], textarea, select {
       width:100%; padding:14px; border-radius:10px; /* Larger input, rounder corners */
       border:1px solid var(--border-color); background:var(--card-bg); font-size:16px;
-      transition: box-shadow .2s, border-color .2s;
+      transition: box-shadow .18s, border-color .18s, background .18s, color .18s;
     }
-    input:focus, textarea:focus { outline:none; box-shadow: 0 0 0 3px rgba(168,153,132,0.3); border-color:var(--accent-dark); }
+    input:focus, textarea:focus { outline:none; box-shadow: 0 0 0 3px rgba(168,153,132,0.22); border-color:var(--accent-dark); }
+
+    /* Validation states */
+    .valid { border-color: #2ecc71 !important; box-shadow: 0 4px 12px rgba(46,204,113,0.12); }
+    .invalid { border-color: #e74c3c !important; box-shadow: 0 4px 12px rgba(231,76,60,0.08); }
+    .field-error { color: #e74c3c; font-size:0.9em; margin-top:6px; display:none; }
+    .field-success { color: #2ecc71; font-size:0.9em; margin-top:6px; display:none; }
+
+    /* Smooth theme transitions */
+    :root, body, .card, .nav a { transition: background-color .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease); }
 
     .muted-input { background: var(--accent-light); color:var(--muted-text); }
     .disclaimer { font-size:0.95em; color:var(--accent-dark); background:var(--accent-light); padding:12px; border-radius:10px; margin-top:15px; border-left:4px solid var(--accent-color); }
@@ -428,6 +565,8 @@
       border: 1px solid var(--border-color);
       transform: translateY(0);
       transition: transform .3s var(--ease);
+      max-height: 90vh; /* allow scrolling inside modal on mobile */
+      overflow: auto;
     }
     .modal:not(.show) .modal-card { transform: translateY(-20px); }
     .modal-close {
@@ -488,20 +627,27 @@
     /* floating booking widget */
     .floating-booking-widget {
       position: fixed; bottom: 30px; right: 30px; z-index:80;
-      background: var(--accent-dark); color:white; padding:15px; border-radius:15px; display:flex; align-items:center; gap:15px;
+      background: var(--accent-dark); padding:15px; border-radius:15px; display:flex; align-items:center; gap:15px;
       box-shadow: 0 15px 45px rgba(0,0,0,0.4);
       transform: translateX(30px); opacity:0; pointer-events:none; transition: transform .4s, opacity .4s;
-      border:2px solid rgba(255,255,255,0.15); /* More defined border */
+      border:2px solid rgba(255,255,255,0.15);
     }
     .floating-booking-widget.show { transform: translateX(0); opacity:1; pointer-events:auto; }
+    .floating-booking-widget label { color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
     .floating-booking-widget input {
         border:none;
         border-radius:10px;
         padding:10px 12px;
         width:120px;
-        background:rgba(255,255,255,0.95);
+        background:var(--card-bg);
         color:var(--primary-text);
         font-size: 14px;
+        border: 1px solid var(--border-color);
+    }
+    body.dark-mode .floating-booking-widget input {
+        background: var(--page-bg);
+        border-color: var(--accent-light);
+        color: white;
     }
     .floating-booking-widget .btn.primary {
         padding: 10px 15px;
@@ -521,7 +667,7 @@
       .headline { font-size: 56px; }
     }
     @media (max-width:768px) {
-      .headline { font-size:42px; }
+      .headline { font-size:var(--fs-h3); }
       .section-title { font-size: 36px; }
       .room-grid { grid-template-columns: 1fr; }
       .room-card img { height:220px; }
@@ -534,6 +680,9 @@
       .room-gallery-thumbs { display:none; }
       .hero { padding: 70px 18px; border-radius: 0 0 25px 25px; }
       .nav { display: none; } /* Hide main nav on small screen */
+      .mobile-menu-button { display:inline-flex; }
+      .mobile-bottom-nav { display:flex; }
+      .floating-booking-widget .collapse-toggle { display:block; }
     }
 
     /* small helpers */
@@ -567,7 +716,7 @@
           <a href="#story" class="nav-link" data-view="story" onclick="showView('story')">Our Story</a>
           <a href="#login" class="nav-link" data-view="login" id="login-nav-link" onclick="showView('login')">Login</a>
         </nav>
-
+        <button id="mobileMenuButton" class="mobile-menu-button" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
         <button id="dark-mode-toggle" aria-pressed="false" aria-label="Toggle dark mode" onclick="toggleDarkMode()">
           <i class="fas fa-moon"></i>
         </button>
@@ -575,10 +724,34 @@
     </div>
   </header>
 
+  <div id="mobileNavOverlay" class="mobile-nav-overlay" aria-hidden="true">
+    <div class="mobile-nav-panel" role="dialog" aria-label="Mobile menu">
+      <button style="float:right; border:none; background:transparent; font-size:18px;" aria-label="Close menu" onclick="toggleMobileMenu(false)">&times;</button>
+      <nav style="margin-top:6px;">
+        <a href="#home" onclick="toggleMobileMenu(false); showView('home')">Home</a>
+        <a href="#rooms" onclick="toggleMobileMenu(false); showView('rooms')">Rooms</a>
+        <a href="#booking" onclick="toggleMobileMenu(false); showView('booking')">Booking</a>
+        <a href="#reviews" onclick="toggleMobileMenu(false); showView('reviews')">Reviews</a>
+        <a href="#contact" onclick="toggleMobileMenu(false); showView('contact')">Contact</a>
+        <a href="#story" onclick="toggleMobileMenu(false); showView('story')">Our Story</a>
+        <a href="#login" onclick="toggleMobileMenu(false); showView('login')">Login</a>
+      </nav>
+    </div>
+  </div>
+
   <main id="main-content">
     <section id="home" class="view" style="padding: 0 0 100px 0; border-top: none;">
       <div class="hero">
-        <div class="hero-content wrap" data-aos="fade-up">
+        <!-- Optional video background (keeps existing background image as poster/fallback).
+             To use a real video, place `hero.mp4` in the same folder or update the src below to a CDN-hosted mp4.
+             Video will be auto-played only on non-mobile and when network conditions allow. -->
+        <div class="hero-media" aria-hidden="true">
+          <video id="heroVideo" muted playsinline loop poster="https://placehold.co/1600x700/B5A78B/FFFFFF?text=Stunning+Bohol+View">
+            <source src="hero.mp4" type="video/mp4">
+            <!-- If you want to use a hosted sample video, replace the src above. If no video is available, the background image remains. -->
+          </video>
+        </div>
+        <div class="hero-content wrap hero-parallax" data-aos="fade-up">
           <h1 class="headline">Escape to Tranquility in Panglao, Bohol</h1>
           <p class="subheadline">Experience the authentic charm and comfort of La Casa De Cueto, your ideal island getaway.</p>
           <div class="cta-row">
@@ -637,7 +810,7 @@
         </div>
 
         <div class="room-grid" data-aos="fade-up" data-aos-delay="300">
-          <div class="room-card card" data-room-code="room1" onclick="selectRoom('room1'); showView('booking')" role="button" aria-label="Select Room 1">
+          <div class="room-card card" data-room-code="room1" onclick="selectRoom('room1'); (typeof openCalendarForRoom === 'function' ? openCalendarForRoom('room1') : showView('booking'))" role="button" aria-label="Select Room 1">
             <img src="https://placehold.co/800x600/B5A78B/FFFFFF?text=Room+1+Twin+Beds" alt="Photo of Room 1" loading="lazy">
             <div class="room-details">
               <h3>Room 1 (Twin Beds)</h3>
@@ -655,7 +828,7 @@
             </div>
           </div>
 
-          <div class="room-card card" data-room-code="room2" onclick="selectRoom('room2'); showView('booking')" role="button" aria-label="Select Room 2">
+          <div class="room-card card" data-room-code="room2" onclick="selectRoom('room2'); (typeof openCalendarForRoom === 'function' ? openCalendarForRoom('room2') : showView('booking'))" role="button" aria-label="Select Room 2">
             <img src="https://placehold.co/800x600/9E917A/FFFFFF?text=Room+2+Twin+Beds" alt="Photo of Room 2" loading="lazy">
             <div class="room-details">
               <h3>Room 2 (Twin Beds)</h3>
@@ -690,20 +863,26 @@
               <div class="form-group">
                 <label for="name">Full Name (Contact)</label>
                 <input type="text" id="name" required placeholder="John Dela Cruz" autocomplete="name">
+                <div class="field-error" id="nameError" aria-live="polite"></div>
+                <div class="field-success" id="nameSuccess" aria-live="polite"></div>
               </div>
               <div class="form-group">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" required placeholder="john@example.com" autocomplete="email">
+                <div class="field-error" id="emailError" aria-live="polite"></div>
+                <div class="field-success" id="emailSuccess" aria-live="polite"></div>
               </div>
 
               <div class="form-group" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
                 <div>
                   <label for="checkin">Check-in Date</label>
                   <input type="date" id="checkin" required onchange="initBookingDates(); recalcSummary();">
+                  <div class="field-error" id="checkinError" aria-live="polite"></div>
                 </div>
                 <div>
                   <label for="checkout">Check-out Date</label>
                   <input type="date" id="checkout" required onchange="initBookingDates(); recalcSummary();">
+                  <div class="field-error" id="checkoutError" aria-live="polite"></div>
                 </div>
               </div>
 
@@ -1005,8 +1184,37 @@
         </div>
       </div>
       <button class="btn primary" onclick="quickBook()">Book</button>
+      <button class="collapse-toggle" aria-label="Collapse booking widget" onclick="toggleFloatingWidgetCollapse()">▾</button>
     </div>
   </main>
+
+  <!-- Lightbox styles -->
+  <style>
+    #lightboxOverlay { display:none; }
+    @media (max-width: 768px) { #lightboxOverlay img { max-width: 98%; max-height: 80%; } }
+  </style>
+
+  <!-- Mobile bottom navigation -->
+  <nav class="mobile-bottom-nav" role="navigation" aria-label="Mobile navigation">
+    <button onclick="showView('home')" aria-label="Home"><i class="fas fa-home"></i><span>Home</span></button>
+    <button onclick="showView('rooms')" aria-label="Rooms"><i class="fas fa-bed"></i><span>Rooms</span></button>
+    <button onclick="showView('booking')" aria-label="Booking"><i class="fas fa-calendar-check"></i><span>Book</span></button>
+    <button onclick="showView('reviews')" aria-label="Reviews"><i class="fas fa-star"></i><span>Reviews</span></button>
+    <button onclick="showView('contact')" aria-label="Contact"><i class="fas fa-envelope"></i><span>Contact</span></button>
+  </nav>
+
+  <button id="backToTop" aria-label="Back to top" title="Back to top">↑</button>
+
+  <!-- Tooltip / small helper styles -->
+  <style>
+    [data-tooltip] { position: relative; }
+    [data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.75); color: #fff; padding:6px 8px; border-radius:6px; font-size:12px; white-space:nowrap; z-index:1400;
+    }
+    .btn { touch-action: manipulation; }
+  </style>
 
   <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
@@ -1039,7 +1247,11 @@
 
     // Persisted state for dark mode
     function applyDarkModeFromStorage() {
-      const isDark = localStorage.getItem('lcd_dark') === '1';
+      // Respect explicit user choice first, otherwise use system preference
+      const stored = localStorage.getItem('lcd_dark');
+      let isDark = null;
+      if (stored === '1' || stored === '0') isDark = stored === '1';
+      else isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (isDark) document.documentElement.classList.add('dark-mode'), document.body.classList.add('dark-mode');
       updateDarkToggleButton(isDark);
     }
@@ -1088,20 +1300,38 @@
       document.getElementById('room-price-display').textContent = '₱' + room.price.toLocaleString();
       populateBookingCarousel(room.images);
       recalcSummary();
+      // persist selection across sessions for convenience
       sessionStorage.setItem('lcd_selected_room', code);
+      try { localStorage.setItem('lcd_selected_room', code); } catch (e) {}
     }
 
     function populateBookingCarousel(images) {
       const container = document.getElementById('carousel-slide-container');
       const indicators = document.getElementById('carousel-indicators');
+      if (!container || !indicators) return;
+      
+      // Clear existing content
       container.innerHTML = '';
       indicators.innerHTML = '';
+      
+      // Create a wrapper for absolute positioning
+      container.style.position = 'relative';
+      container.style.height = '100%';
+      
+      // Add images with proper positioning
       images.forEach((src, i) => {
         const img = document.createElement('img');
         img.src = src;
         img.className = 'carousel-image' + (i === 0 ? ' active' : '');
         img.loading = 'lazy';
+        img.style.position = 'absolute';
+        img.style.top = '0';
+        img.style.left = '0';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
         container.appendChild(img);
+        
         const dot = document.createElement('button');
         dot.className = 'carousel-indicator' + (i === 0 ? ' active' : '');
         dot.setAttribute('aria-label', 'Image ' + (i+1));
@@ -1159,16 +1389,80 @@
     }
 
     // Authentication (demo)
+    // Focus trap helpers for accessible modals
+    // Generate a stable demo user id (uses crypto.randomUUID when available)
+    function generateUserId() {
+      try {
+        if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+      } catch (e) {}
+      return 'u' + Date.now() + Math.floor(Math.random()*10000);
+    }
+    (function(){
+      let _trapTarget = null;
+      let _previousFocused = null;
+      function focusableElements(el){
+        if(!el) return [];
+        return Array.from(el.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'))
+          .filter(e => e.offsetWidth || e.offsetHeight || e.getClientRects().length);
+      }
+      window.trapFocus = function(modal){
+        if(!modal) return;
+        _previousFocused = document.activeElement;
+        _trapTarget = modal;
+        const els = focusableElements(modal);
+        if(els.length) els[0].focus();
+        document.addEventListener('focus', enforceFocus, true);
+      };
+      window.releaseFocus = function(){
+        document.removeEventListener('focus', enforceFocus, true);
+        if(_previousFocused && typeof _previousFocused.focus === 'function') _previousFocused.focus();
+        _trapTarget = null; _previousFocused = null;
+      };
+      function enforceFocus(e){
+        if(!_trapTarget) return;
+        if(!_trapTarget.contains(e.target)){
+          e.stopPropagation();
+          const els = focusableElements(_trapTarget);
+          if(els.length) els[0].focus();
+        }
+      }
+    })();
+
     function openLoginModal() {
       const modal = document.getElementById('login-modal');
       modal.classList.add('show');
       modal.setAttribute('aria-hidden', 'false');
+      if (typeof trapFocus === 'function') trapFocus(modal);
       setTimeout(() => document.getElementById('loginEmail')?.focus(), 120);
     }
     function closeLoginModal() {
       const modal = document.getElementById('login-modal');
       modal.classList.remove('show');
       modal.setAttribute('aria-hidden', 'true');
+      if (typeof releaseFocus === 'function') releaseFocus();
+    }
+
+    // Mobile menu toggle (global so inline onclick works)
+    function toggleMobileMenu(force) {
+      const overlay = document.getElementById('mobileNavOverlay');
+      const btn = document.getElementById('mobileMenuButton');
+      const show = typeof force === 'boolean' ? force : !overlay.classList.contains('show');
+      overlay.classList.toggle('show', show);
+      overlay.setAttribute('aria-hidden', show ? 'false' : 'true');
+      if (btn) btn.setAttribute('aria-expanded', show ? 'true' : 'false');
+      if (show && typeof trapFocus === 'function') trapFocus(overlay);
+      if (!show && typeof releaseFocus === 'function') releaseFocus();
+    }
+
+    // Floating widget collapse toggle
+    function toggleFloatingWidgetCollapse() {
+      const w = document.getElementById('floatingWidget');
+      if (!w) return;
+      const collapsed = !w.classList.toggle('collapsed');
+      // store collapsed state
+      localStorage.setItem('lcd_widget_collapsed', w.classList.contains('collapsed') ? '1' : '0');
+      // if expanded, ensure it's visible
+      if (!w.classList.contains('collapsed')) w.classList.add('show');
     }
 
     function isLoggedIn() { return !!localStorage.getItem('lcd_user'); }
@@ -1189,11 +1483,91 @@
         const email = document.getElementById('loginEmail').value.trim();
         const name = document.getElementById('loginName').value.trim();
         if (!email || !name) return;
-        localStorage.setItem('lcd_user', JSON.stringify({email, name}));
+        // Reuse existing user id if same email is already stored
+        let uid = null;
+        try {
+          const existing = JSON.parse(localStorage.getItem('lcd_user') || 'null');
+          if (existing && existing.id && existing.email && existing.email.toLowerCase() === email.toLowerCase()) {
+            uid = existing.id;
+          }
+        } catch (e) { uid = null; }
+        if (!uid) uid = generateUserId();
+        localStorage.setItem('lcd_user', JSON.stringify({id: uid, email, name}));
         closeLoginModal();
         refreshAuthUI();
         alert('Logged in (demo).');
       });
+
+      // Toast/snackbar helper
+      window.showToast = function(message, type = 'info', duration = 3500) {
+        let container = document.getElementById('toastContainer');
+        if (!container) {
+          container = document.createElement('div');
+          container.id = 'toastContainer';
+          container.className = 'toast-container';
+          document.body.appendChild(container);
+        }
+        const t = document.createElement('div');
+        t.className = `toast ${type}`;
+        t.textContent = message;
+        container.appendChild(t);
+        // allow CSS transition
+        requestAnimationFrame(() => t.classList.add('show'));
+        setTimeout(() => { t.classList.remove('show'); setTimeout(()=> t.remove(), 250); }, duration);
+      };
+
+      // showUndoToast: creates a toast with an action button (e.g., Undo)
+      function showUndoToast(message, actionLabel, actionCb, duration = 6000) {
+        let container = document.getElementById('toastContainer');
+        if (!container) {
+          container = document.createElement('div');
+          container.id = 'toastContainer';
+          container.className = 'toast-container';
+          document.body.appendChild(container);
+        }
+        const t = document.createElement('div');
+        t.className = 'toast info';
+        const msg = document.createElement('span'); msg.textContent = message;
+        const act = document.createElement('button'); act.className = 'btn google-btn'; act.style.marginLeft = '12px'; act.textContent = actionLabel;
+        act.addEventListener('click', () => { try { actionCb(); t.classList.remove('show'); setTimeout(()=>t.remove(),250); } catch(e){ console.error(e); } });
+        t.appendChild(msg); t.appendChild(act);
+        container.appendChild(t);
+        requestAnimationFrame(() => t.classList.add('show'));
+        setTimeout(() => { if (t) { t.classList.remove('show'); setTimeout(()=> t.remove(),250); } }, duration);
+      }
+
+      // Real-time input validation (name & email)
+      function isValidEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+      const nameInput = document.getElementById('name');
+      const emailInput = document.getElementById('email');
+      // Enhanced real-time validation with messages
+      function setFieldError(el, message){
+        if(!el) return;
+        el.classList.add('invalid'); el.classList.remove('valid'); el.setAttribute('aria-invalid','true');
+        const err = document.getElementById(el.id + 'Error');
+        const ok = document.getElementById(el.id + 'Success');
+        if(err) { err.textContent = message; err.style.display = 'block'; }
+        if(ok) ok.style.display = 'none';
+      }
+      function setFieldValid(el, message){
+        if(!el) return;
+        el.classList.remove('invalid'); el.classList.add('valid'); el.setAttribute('aria-invalid','false');
+        const err = document.getElementById(el.id + 'Error');
+        const ok = document.getElementById(el.id + 'Success');
+        if(ok) { ok.textContent = message || 'Looks good'; ok.style.display = 'block'; }
+        if(err) err.style.display = 'none';
+      }
+
+      if (nameInput) nameInput.addEventListener('input', () => {
+        if (nameInput.value.trim().length < 2) { setFieldError(nameInput, 'Please enter your full name.'); }
+        else { setFieldValid(nameInput, 'Name looks good.'); }
+      });
+      if (emailInput) emailInput.addEventListener('input', () => {
+        if (!isValidEmail(emailInput.value.trim())) { setFieldError(emailInput, 'Please enter a valid email address.'); }
+        else { setFieldValid(emailInput, 'Email looks valid.'); }
+      });
+
+      // populate gallery with skeleton then replace
 
       // login section handler
       const loginSectionForm = document.getElementById('loginSectionForm');
@@ -1203,16 +1577,101 @@
         const name = document.getElementById('sectionName').value.trim();
         const remember = document.getElementById('rememberMe').checked;
         if (!email || !name) return;
-        localStorage.setItem('lcd_user', JSON.stringify({email, name}));
+        // Reuse existing id if same email found, otherwise create
+        let uid = null;
+        try {
+          const existing = JSON.parse(localStorage.getItem('lcd_user') || 'null');
+          if (existing && existing.id && existing.email && existing.email.toLowerCase() === email.toLowerCase()) {
+            uid = existing.id;
+          }
+        } catch (e) { uid = null; }
+        if (!uid) uid = generateUserId();
+        localStorage.setItem('lcd_user', JSON.stringify({id: uid, email, name}));
         refreshAuthUI();
         showView('booking');
       });
 
-      document.getElementById('bookingForm').addEventListener('submit', (e) => {
+      // Booking form submit handler — require dates first, otherwise open calendar and resume after confirmation
+      const bookingForm = document.getElementById('bookingForm');
+      function bookingFormHandler(e) {
         e.preventDefault();
-        if (!isLoggedIn()) { showView('login'); openLoginModal(); return; }
-        alert('Proceeding to payment... (demo). Your booking details are stored only locally in this demo.');
-      });
+        const checkinVal = document.getElementById('checkin').value;
+        const checkoutVal = document.getElementById('checkout').value;
+
+        // If dates are not selected, open the calendar and set a resume intent flag
+        if (!checkinVal || !checkoutVal) {
+          window._booking_resume_intent = true;
+          const selected = sessionStorage.getItem('lcd_selected_room') || 'room1';
+          if (typeof openCalendarForRoom === 'function') {
+            openCalendarForRoom(selected);
+          } else {
+            // Fallback: navigate to booking view so user can manually select dates
+            showView('booking');
+          }
+          return;
+        }
+
+        // Validate form before proceeding to confirmation
+        if (!validateBookingForm()) return;
+
+        // disable submit to avoid double submits while modal opens
+        const submitBtn = bookingForm.querySelector('button[type="submit"]');
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.dataset.processing = '1'; }
+        // Show booking confirmation modal
+        openBookingConfirm();
+        // Re-enable submit after small delay to restore UX (real app would wait for server response)
+        setTimeout(() => { if (submitBtn) { submitBtn.disabled = false; delete submitBtn.dataset.processing; } }, 800);
+      }
+      bookingForm.addEventListener('submit', bookingFormHandler);
+
+      // Booking confirmation modal handlers
+      function openBookingConfirm() {
+        const modal = document.getElementById('bookingConfirmModal');
+        if (!modal) return;
+        
+        // Fill confirmation details
+        const roomCode = sessionStorage.getItem('lcd_selected_room') || 'room1';
+        const room = ROOM_DATA[roomCode];
+        document.getElementById('confirm-room').textContent = room.title;
+        document.getElementById('confirm-name').textContent = document.getElementById('name').value;
+        document.getElementById('confirm-email').textContent = document.getElementById('email').value;
+        document.getElementById('confirm-checkin').textContent = document.getElementById('checkin').value;
+        document.getElementById('confirm-checkout').textContent = document.getElementById('checkout').value;
+        document.getElementById('confirm-guests').textContent = document.getElementById('guests').value + ' guest(s)';
+        document.getElementById('confirm-airport').textContent = document.getElementById('airport').checked ? 'Yes (+₱300)' : 'No';
+        document.getElementById('confirm-payment').textContent = document.getElementById('fullPayment').checked ? 'Pay full amount now' : '50% deposit now, balance at check-in';
+        document.getElementById('confirm-total').textContent = document.getElementById('summary-total').textContent;
+        document.getElementById('confirm-deposit').textContent = document.getElementById('deposit-required').textContent;
+
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+        if (typeof trapFocus === 'function') trapFocus(modal);
+      }
+
+      function closeBookingConfirm() {
+        const modal = document.getElementById('bookingConfirmModal');
+        if (!modal) return;
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        if (typeof releaseFocus === 'function') releaseFocus();
+      }
+
+      function proceedWithBooking() {
+        const modal = document.getElementById('bookingConfirmModal');
+        const confirmBtn = modal?.querySelector('button[onclick="proceedWithBooking()"]') || modal?.querySelector('.btn.primary');
+        if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.textContent = 'Processing...'; }
+        // Resume normal demo flow
+        if (!isLoggedIn()) { closeBookingConfirm(); showView('login'); openLoginModal(); if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.textContent = 'Confirm & Continue'; } return; }
+        // simulate processing and show success
+        setTimeout(() => {
+          closeBookingConfirm();
+          showToast('Booking confirmed. Proceeding to payment... (demo)', 'success');
+          // Reset confirm button
+          if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.textContent = 'Confirm & Continue'; }
+          // final demo message
+          setTimeout(() => alert('Proceeding to payment... (demo). Your booking details are stored only locally in this demo.'), 300);
+        }, 900);
+      }
 
       // contact form
       document.getElementById('messageForm').addEventListener('submit', (e) => {
@@ -1231,7 +1690,8 @@
         const text = document.getElementById('reviewText').value.trim();
         const user = getCurrentUser();
         const reviews = JSON.parse(localStorage.getItem('lcd_reviews') || '[]');
-        reviews.unshift({ id: Date.now(), rating: Number(rating), title, text, author: user.name || user.email, created_at: new Date().toISOString() });
+        // include authorId for stricter ownership checks
+        reviews.unshift({ id: Date.now(), rating: Number(rating), title, text, author: user.name || user.email, authorId: user.id, created_at: new Date().toISOString() });
         localStorage.setItem('lcd_reviews', JSON.stringify(reviews));
         renderReviews();
         e.target.reset();
@@ -1242,12 +1702,154 @@
       document.getElementById('floatingWidget').classList.add('show');
       document.getElementById('floatingWidget').setAttribute('aria-hidden','false');
 
+      // restore floating widget collapsed state from storage
+      try {
+        const w = document.getElementById('floatingWidget');
+        if (localStorage.getItem('lcd_widget_collapsed') === '1') w.classList.add('collapsed');
+      } catch (e) {}
+
+      // set min dates to prevent selecting past dates
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth()+1).padStart(2,'0');
+      const dd = String(today.getDate()).padStart(2,'0');
+      const isoToday = `${yyyy}-${mm}-${dd}`;
+      ['checkin','checkout','quickCheckin'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.type === 'date') el.setAttribute('min', isoToday);
+      });
+
+      // Restore booking draft (if any)
+      try {
+        const draft = JSON.parse(localStorage.getItem('lcd_booking_draft') || '{}');
+        if (draft) {
+          if (draft.name) document.getElementById('name').value = draft.name;
+          if (draft.email) document.getElementById('email').value = draft.email;
+          if (draft.checkin) document.getElementById('checkin').value = draft.checkin;
+          if (draft.checkout) document.getElementById('checkout').value = draft.checkout;
+          if (draft.guests) document.getElementById('guests').value = draft.guests;
+          initBookingDates(); recalcSummary();
+        }
+      } catch (e) {}
+
+      // Save booking draft on change
+      ['name','email','checkin','checkout','guests','airport','fullPayment'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('change', () => {
+          const draft = {
+            name: document.getElementById('name').value || '',
+            email: document.getElementById('email').value || '',
+            checkin: document.getElementById('checkin').value || '',
+            checkout: document.getElementById('checkout').value || '',
+            guests: document.getElementById('guests').value || '1',
+            airport: document.getElementById('airport').checked,
+            fullPayment: document.getElementById('fullPayment').checked,
+          };
+          localStorage.setItem('lcd_booking_draft', JSON.stringify(draft));
+        });
+      });
+
+      // back-to-top and active-section handling
+      const backBtn = document.getElementById('backToTop');
+      function updateUIOnScroll(){
+        const showBack = window.scrollY > 400;
+        if (backBtn) backBtn.style.display = showBack ? 'flex' : 'none';
+      }
+      updateUIOnScroll();
+      window.addEventListener('scroll', updateUIOnScroll, { passive: true });
+
+      // IntersectionObserver-based active section highlighting (more reliable)
+      const sectionsToObserve = ['home','rooms','booking','reviews','contact','story','login'];
+      const ioOptions = { root: null, rootMargin: '0px 0px -60%', threshold: 0 };
+      try{
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(en => {
+            if (en.isIntersecting) {
+              const id = en.target.id;
+              document.querySelectorAll('.nav a').forEach(a => a.classList.toggle('active', a.dataset.view === id));
+              // mobile bottom nav
+              document.querySelectorAll('.mobile-bottom-nav button').forEach(btn => {
+                const onclick = (btn.getAttribute('onclick')||'');
+                const view = onclick.match(/showView\('([^']+)'\)/)?.[1];
+                btn.classList.toggle('active', view === id);
+              });
+            }
+          });
+        }, ioOptions);
+        sectionsToObserve.forEach(s => { const el = document.getElementById(s); if (el) observer.observe(el); });
+      } catch(e) { /* fallback already handles basic active state */ }
+      updateUIOnScroll();
+      window.addEventListener('scroll', updateUIOnScroll, { passive: true });
+      if (backBtn) backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+      // expose a small validation helper used on submit
+      window.validateBookingForm = function(){
+        const name = document.getElementById('name')?.value.trim();
+        const email = document.getElementById('email')?.value.trim();
+        const checkin = document.getElementById('checkin')?.value;
+        const checkout = document.getElementById('checkout')?.value;
+        // reset inline errors
+        try { document.getElementById('nameError').style.display='none'; document.getElementById('emailError').style.display='none'; document.getElementById('checkinError').style.display='none'; document.getElementById('checkoutError').style.display='none'; } catch(e){}
+        if (!name || name.length < 2) { setFieldError(document.getElementById('name'), 'Please enter your full name.'); return false; }
+        if (!isValidEmail(email)) { setFieldError(document.getElementById('email'), 'Please enter a valid email address.'); return false; }
+        if (!checkin) { setFieldError(document.getElementById('checkin'), 'Please select a check-in date.'); return false; }
+        if (!checkout) { setFieldError(document.getElementById('checkout'), 'Please select a check-out date.'); return false; }
+        if (new Date(checkout) <= new Date(checkin)) { setFieldError(document.getElementById('checkout'), 'Check-out must be after check-in.'); return false; }
+        return true;
+      };
+
+      // close mobile menu if overlay clicked
+      const overlay = document.getElementById('mobileNavOverlay');
+      if (overlay) overlay.addEventListener('click', (ev) => { if (ev.target === overlay) toggleMobileMenu(false); });
+
+        // add simple tooltips to room cards and book buttons
+        document.querySelectorAll('.room-card').forEach(rc => {
+          const btn = rc.querySelector('.btn');
+          if (btn) btn.setAttribute('data-tooltip','Book Now');
+          rc.setAttribute('data-tooltip','View room details');
+        });
+
       // gallery + swipers
       populateRoomGallery();
-      const saved = sessionStorage.getItem('lcd_selected_room') || 'room1';
-      selectRoom(saved);
+  // Prefer persistent last selected room, fallback to session or default
+  const saved = localStorage.getItem('lcd_selected_room') || sessionStorage.getItem('lcd_selected_room') || 'room1';
+  selectRoom(saved);
 
       if (typeof AOS !== 'undefined') AOS.init({ once: true, duration: 700, easing: 'ease-in-out' });
+
+      // Hero video autoplay & parallax
+      (function(){
+        const video = document.getElementById('heroVideo');
+        const parContent = document.querySelector('.hero-parallax');
+        const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+        // Try to play video only if not mobile and video element has a source
+        if (video && video.querySelector('source') && !isMobile) {
+          // Avoid autoplay on slow connections or if Save-Data enabled
+          const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+          const slow = conn && (conn.saveData || (conn.effectiveType && /(2g|slow-2g)/i.test(conn.effectiveType)));
+          if (!slow) {
+            video.play().catch(()=>{});
+          }
+        }
+
+        // Parallax: translate hero content on scroll slightly for depth
+        if (parContent) {
+          function onScroll(){
+            const sc = Math.min(window.scrollY, 200);
+            const t = sc * 0.12; // small multiplier for subtle effect
+            parContent.style.transform = `translateY(${t}px)`;
+          }
+          window.addEventListener('scroll', onScroll, { passive: true });
+          onScroll();
+        }
+      })();
+
+      // initial page fade-in for smoother load
+      setTimeout(() => {
+        document.querySelectorAll('.fade-in').forEach(el => el.classList.add('show'));
+        document.documentElement.classList.add('page-ready');
+      }, 120);
 
       setTimeout(() => {
         try {
@@ -1270,27 +1872,68 @@
         renderReviews();
       }, 300);
 
-      document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeLoginModal(); });
+      // Lightbox implementation (simple, lightweight)
+      const lightbox = (function(){
+        let currentIndex = 0;
+        const overlay = document.createElement('div');
+        overlay.id = 'lightboxOverlay';
+        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:2000;'
+        const img = document.createElement('img'); img.style.maxWidth = '90%'; img.style.maxHeight='90%'; img.style.boxShadow='0 20px 60px rgba(0,0,0,0.6)'; img.alt='';
+        const prev = document.createElement('button'); prev.textContent='‹'; prev.style.cssText='position:absolute;left:18px;top:50%;transform:translateY(-50%);font-size:48px;background:transparent;border:none;color:white;cursor:pointer;';
+        const next = document.createElement('button'); next.textContent='›'; next.style.cssText='position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:48px;background:transparent;border:none;color:white;cursor:pointer;';
+        overlay.appendChild(prev); overlay.appendChild(img); overlay.appendChild(next);
+        document.body.appendChild(overlay);
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.style.display='none'; });
+        prev.addEventListener('click', (e) => { e.stopPropagation(); show(currentIndex - 1); });
+        next.addEventListener('click', (e) => { e.stopPropagation(); show(currentIndex + 1); });
+        document.addEventListener('keydown', (e) => { if (overlay.style.display !== 'flex') return; if (e.key === 'Escape') overlay.style.display='none'; if (e.key === 'ArrowLeft') show(currentIndex - 1); if (e.key === 'ArrowRight') show(currentIndex + 1); });
+        function show(i){
+          const imgs = document.querySelectorAll('.room-gallery-container .swiper-slide img');
+          if (!imgs.length) return;
+          currentIndex = (i + imgs.length) % imgs.length;
+          img.src = imgs[currentIndex].src;
+          overlay.style.display = 'flex';
+        }
+        return { open: show };
+      })();
+      function openLightbox(index){ try { window.scrollTo({top:0, behavior:'instant'}); lightbox.open(index); } catch(e){} }
+
+      document.addEventListener('keydown', (ev) => { 
+        if (ev.key === 'Escape') {
+          closeLoginModal();
+          closeBookingConfirm();
+        }
+      });
     });
 
     function populateRoomGallery() {
       const mainWrapper = document.getElementById('room-gallery-main-slides');
       const thumbsWrapper = document.getElementById('room-gallery-thumb-slides');
-      mainWrapper.innerHTML = '';
+      // show skeleton while building
+      mainWrapper.innerHTML = '<div class="skeleton img" style="border-radius:16px;"></div>';
       thumbsWrapper.innerHTML = '';
-      Object.values(ROOM_DATA).forEach(room => {
-        room.images.forEach(src => {
-          const slide = document.createElement('div'); slide.className = 'swiper-slide';
-          const img = document.createElement('img'); img.src = src; img.loading = 'lazy'; img.alt = room.title;
-          slide.appendChild(img);
-          mainWrapper.appendChild(slide);
+      // build slides then remove skeleton
+      setTimeout(() => {
+        mainWrapper.innerHTML = '';
+        thumbsWrapper.innerHTML = '';
+        Object.values(ROOM_DATA).forEach(room => {
+          room.images.forEach(src => {
+            const slide = document.createElement('div'); slide.className = 'swiper-slide';
+            const img = document.createElement('img'); img.src = src; img.loading = 'lazy'; img.alt = room.title; img.className = 'img-zoom gallery-item';
+            slide.appendChild(img);
+            mainWrapper.appendChild(slide);
 
-          const tslide = document.createElement('div'); tslide.className = 'swiper-slide';
-          const timg = document.createElement('img'); timg.src = src; timg.loading='lazy';
-          tslide.appendChild(timg);
-          thumbsWrapper.appendChild(tslide);
+            const tslide = document.createElement('div'); tslide.className = 'swiper-slide';
+            const timg = document.createElement('img'); timg.src = src; timg.loading='lazy'; timg.alt = room.title;
+            tslide.appendChild(timg);
+            thumbsWrapper.appendChild(tslide);
+          });
         });
-      });
+        // attach lightbox handlers
+        document.querySelectorAll('.gallery-item').forEach((el, i) => {
+          el.addEventListener('click', (ev) => { openLightbox(i); });
+        });
+      }, 220);
     }
 
     function refreshAuthUI() {
@@ -1330,14 +1973,39 @@
     function renderReviews() {
       const list = document.getElementById('reviews-list');
       const reviews = JSON.parse(localStorage.getItem('lcd_reviews') || '[]');
+      // Keep structured data in sync even if there are no reviews
+      try { updateReviewsJsonLd(reviews); } catch(e) {}
       list.innerHTML = '';
       if (!reviews.length) {
-        list.innerHTML = '<p class="muted swiper-slide" style="text-align:center;">No reviews yet — be the first to write one!</p>';
+        // show a skeleton card while empty
+        list.innerHTML = '<div class="swiper-slide"><div class="card" style="padding:20px;"><div class="skeleton text" style="width:60%"></div><div class="skeleton text" style="width:40%"></div><div class="skeleton text" style="width:80%; height:80px; margin-top:10px;"></div></div></div>';
         return;
       }
       reviews.forEach(r => {
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
+        // Determine if current user can edit/delete this review
+        const currentUser = getCurrentUser();
+        const logged = isLoggedIn();
+        let canManage = false;
+        // Prefer strict authorId matching when available
+        if (logged && currentUser) {
+          if (r.authorId && currentUser.id && r.authorId === currentUser.id) {
+            canManage = true;
+          } else {
+            // Fallback/migration: if review lacks authorId but author string matches current user, attach id
+            const author = (r.author || '').toLowerCase();
+            const uname = (currentUser.name || '').toLowerCase();
+            const uemail = (currentUser.email || '').toLowerCase();
+            if (author && (author === uname || author === uemail)) {
+              try { r.authorId = currentUser.id; localStorage.setItem('lcd_reviews', JSON.stringify(reviews)); } catch(e){}
+              canManage = true;
+            }
+          }
+        }
+
+        const manageButtonsHtml = canManage ? `<div style="margin-top:10px; text-align:right; display:flex; gap:8px; justify-content:flex-end;"><button class=\"btn google-btn\" onclick=\"openEditReview(${r.id})\">Edit</button><button class=\"btn google-btn\" onclick=\"deleteReview(${r.id})\">Delete</button></div>` : '';
+
         slide.innerHTML = `<div class="review-item">
           <div class="review-header">
             <div style="display:flex; align-items:center; gap:8px;">
@@ -1351,10 +2019,205 @@
           </div>
           <h4 class="review-title">${escapeHtml(r.title)}</h4>
           <p class="muted">${escapeHtml(r.text)}</p>
+          ${manageButtonsHtml}
         </div>`;
         list.appendChild(slide);
       });
+      // Also update JSON-LD for reviews so structured data reflects stored reviews (useful for testing/demo)
+      try { updateReviewsJsonLd(reviews); } catch(e) { /* silent */ }
     }
+
+    // Generate or update a JSON-LD script containing Review objects from stored reviews
+    function updateReviewsJsonLd(reviews){
+      const scriptId = 'reviews-jsonld';
+      const node = document.getElementById(scriptId);
+      const lodName = 'La Casa De Cueto';
+      const graph = [];
+      // Add the main lodging business node so reviews can reference it
+      graph.push({
+        '@type': 'LodgingBusiness',
+        'name': lodName
+      });
+      reviews.slice(0,10).forEach(r => {
+        const reviewNode = {
+          '@type': 'Review',
+          'author': { '@type': 'Person', 'name': r.author || 'Guest' },
+          'datePublished': (r.created_at) ? new Date(r.created_at).toISOString() : new Date().toISOString(),
+          'reviewBody': r.text || '',
+          'name': r.title || '',
+          'reviewRating': { '@type': 'Rating', 'ratingValue': String(r.rating || 0) }
+        };
+        graph.push(reviewNode);
+      });
+
+      const ld = { '@context': 'https://schema.org', '@graph': graph };
+      const json = JSON.stringify(ld, null, 2);
+      if (node) node.textContent = json;
+      else {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.id = scriptId;
+        s.textContent = json;
+        document.head.appendChild(s);
+      }
+    }
+
+    // Delete a review by id (only for reviews authored by the current user)
+    function deleteReview(id) {
+      if (!confirm('Delete this review? You can undo this for a short time.')) return;
+      try {
+        const reviews = JSON.parse(localStorage.getItem('lcd_reviews') || '[]');
+        const idx = reviews.findIndex(r => r.id === id);
+        if (idx === -1) { showToast('Review not found.', 'error'); return; }
+        // Only allow deletion if current user is author
+        const user = getCurrentUser();
+        if (!user) { showToast('You must be logged in to delete your review.', 'error'); return; }
+        // Prefer strict authorId match, fallback to legacy author string checks
+        if (reviews[idx].authorId) {
+          if (reviews[idx].authorId !== user.id) { showToast('You can only delete your own reviews.', 'error'); return; }
+        } else {
+          const author = (reviews[idx].author || '').toLowerCase();
+          const uname = (user.name || '').toLowerCase();
+          const uemail = (user.email || '').toLowerCase();
+          if (!(author === uname || author === uemail)) { showToast('You can only delete your own reviews.', 'error'); return; }
+          // migrate to authorId for future strict checks
+          try { reviews[idx].authorId = user.id; } catch(e){}
+        }
+
+        // Perform deletion but allow undo for a short window
+        const deleted = reviews.splice(idx, 1)[0];
+        localStorage.setItem('lcd_reviews', JSON.stringify(reviews));
+        renderReviews();
+
+        // Prepare pending deletions map
+        if (!window._pendingReviewDeletions) window._pendingReviewDeletions = {};
+        // Clear any existing timeout for this id
+        if (window._pendingReviewDeletions[id] && window._pendingReviewDeletions[id].timeoutId) {
+          clearTimeout(window._pendingReviewDeletions[id].timeoutId);
+        }
+
+        // Show undo toast
+        const undoDuration = 6000; // ms
+        const undoAction = () => {
+          // restore review
+          try {
+            const cur = JSON.parse(localStorage.getItem('lcd_reviews') || '[]');
+            cur.unshift(deleted);
+            localStorage.setItem('lcd_reviews', JSON.stringify(cur));
+            renderReviews();
+            showToast('Deletion undone.', 'success');
+            // cancel timeout
+            if (window._pendingReviewDeletions[id] && window._pendingReviewDeletions[id].timeoutId) clearTimeout(window._pendingReviewDeletions[id].timeoutId);
+            delete window._pendingReviewDeletions[id];
+          } catch (e) { console.error(e); showToast('Could not restore review.', 'error'); }
+        };
+
+        // Create undo toast with action button
+        showUndoToast('Review deleted.', 'Undo', undoAction, undoDuration);
+
+        // Set finalizer to remove pending record after duration (no-op since already removed)
+        const tid = setTimeout(() => {
+          if (window._pendingReviewDeletions && window._pendingReviewDeletions[id]) {
+            delete window._pendingReviewDeletions[id];
+          }
+        }, undoDuration + 200);
+        window._pendingReviewDeletions[id] = { deleted, timeoutId: tid };
+
+      } catch (e) {
+        console.error(e);
+        showToast('Could not delete review.', 'error');
+      }
+    }
+
+    // --- Edit review flow: open modal, allow editing title/text/rating, save back to storage
+    function openEditReview(id) {
+      try {
+        const reviews = JSON.parse(localStorage.getItem('lcd_reviews') || '[]');
+        const idx = reviews.findIndex(r => r.id === id);
+        if (idx === -1) { showToast('Review not found.', 'error'); return; }
+        const user = getCurrentUser();
+        if (!user) { showToast('You must be logged in to edit your review.', 'error'); return; }
+        // Prefer strict authorId matching
+        if (reviews[idx].authorId) {
+          if (reviews[idx].authorId !== user.id) { showToast('You can only edit your own reviews.', 'error'); return; }
+        } else {
+          const author = (reviews[idx].author || '').toLowerCase();
+          const uname = (user.name || '').toLowerCase();
+          const uemail = (user.email || '').toLowerCase();
+          if (!(author === uname || author === uemail)) { showToast('You can only edit your own reviews.', 'error'); return; }
+          // migrate
+          try { reviews[idx].authorId = user.id; localStorage.setItem('lcd_reviews', JSON.stringify(reviews)); } catch(e){}
+        }
+
+        // Populate modal fields
+        document.getElementById('editReviewId').value = id;
+        document.getElementById('editReviewTitle').value = reviews[idx].title || '';
+        document.getElementById('editReviewText').value = reviews[idx].text || '';
+        // clear rating radios then set
+        const val = String(reviews[idx].rating || 0);
+        document.querySelectorAll('#editReviewModal input[name="edit-rating"]').forEach(inp => inp.checked = (inp.value === val));
+
+        const modal = document.getElementById('editReviewModal');
+        modal.classList.add('show'); modal.setAttribute('aria-hidden','false');
+        if (typeof trapFocus === 'function') trapFocus(modal);
+        setTimeout(() => document.getElementById('editReviewTitle')?.focus(), 120);
+      } catch (e) { console.error(e); showToast('Could not open edit dialog.', 'error'); }
+    }
+
+    function closeEditReview() {
+      const modal = document.getElementById('editReviewModal');
+      if (!modal) return;
+      modal.classList.remove('show'); modal.setAttribute('aria-hidden','true');
+      if (typeof releaseFocus === 'function') releaseFocus();
+    }
+
+    function saveEditedReview(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      try {
+        const id = Number(document.getElementById('editReviewId').value);
+        const title = document.getElementById('editReviewTitle').value.trim();
+        const text = document.getElementById('editReviewText').value.trim();
+        const rating = Number(document.querySelector('#editReviewModal input[name="edit-rating"]:checked')?.value || 0);
+        if (!title || !text) { showToast('Title and review text are required.', 'error'); return; }
+        if (!rating || rating < 1) { showToast('Please provide a rating.', 'error'); return; }
+
+        const reviews = JSON.parse(localStorage.getItem('lcd_reviews') || '[]');
+        const idx = reviews.findIndex(r => r.id === id);
+        if (idx === -1) { showToast('Review not found.', 'error'); return; }
+
+        // Author check: prefer authorId equality, fallback to legacy author string
+        const user = getCurrentUser();
+        if (!user) { showToast('You must be logged in to edit your review.', 'error'); return; }
+        if (reviews[idx].authorId) {
+          if (reviews[idx].authorId !== user.id) { showToast('You can only edit your own reviews.', 'error'); return; }
+        } else {
+          const author = (reviews[idx].author || '').toLowerCase();
+          const uname = (user.name || '').toLowerCase();
+          const uemail = (user.email || '').toLowerCase();
+          if (!(author === uname || author === uemail)) { showToast('You can only edit your own reviews.', 'error'); return; }
+          // migrate to authorId
+          try { reviews[idx].authorId = user.id; } catch(e){}
+        }
+
+        reviews[idx].title = title;
+        reviews[idx].text = text;
+        reviews[idx].rating = rating;
+        reviews[idx].edited_at = new Date().toISOString();
+        localStorage.setItem('lcd_reviews', JSON.stringify(reviews));
+        renderReviews();
+        updateReviewsJsonLd(reviews);
+        closeEditReview();
+        showToast('Review updated.', 'success');
+      } catch (e) { console.error(e); showToast('Could not save review.', 'error'); }
+    }
+
+    // Ensure images use lazy loading across the page
+    (function ensureLazyImages(){
+      document.querySelectorAll('img').forEach(img => {
+        if (!img.hasAttribute('loading')) img.setAttribute('loading','lazy');
+        // If you produce WebP images in your build, consider adding a <picture> element with WebP source for best compression.
+      });
+    })();
 
     function escapeHtml(s) {
       if (!s) return '';
@@ -1365,7 +2228,7 @@
       const checkin = document.getElementById('quickCheckin').value;
       const nights = parseInt(document.getElementById('quickNights').value || '1', 10);
       if (!checkin || nights < 1) {
-        alert('Please choose a check-in date and nights.');
+        showToast('Please choose a check-in date and number of nights.', 'error');
         return;
       }
       document.getElementById('checkin').value = checkin;
@@ -1375,18 +2238,25 @@
       document.getElementById('checkout').valueAsDate = co;
       initBookingDates(); recalcSummary();
       showView('booking');
+
+      // Save recent room viewed
+      try {
+        const recent = JSON.parse(localStorage.getItem('lcd_recent_rooms') || '[]');
+        const sel = sessionStorage.getItem('lcd_selected_room') || 'room1';
+        if (!recent.includes(sel)) { recent.unshift(sel); if (recent.length>5) recent.length=5; localStorage.setItem('lcd_recent_rooms', JSON.stringify(recent)); }
+      } catch(e){}
     }
 
     setInterval(() => {
       const images = document.querySelectorAll('#carousel-slide-container .carousel-image');
       if (!images.length) return;
       let idx = Array.from(images).findIndex(img => img.classList.contains('active'));
-      idx = (idx + 1) % images.lengthz;
+      idx = (idx + 1) % images.length;
       setActiveCarousel(idx);
     }, 4000);
   </script>
 
-<!-- Calendar Feature Start -->
+    <!-- Calendar Feature Start -->
 <div id="calendarModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="modal-card card" style="position:relative; max-width:700px;">
     <button class="modal-close" aria-label="Close" onclick="closeCalendar()">
@@ -1404,7 +2274,67 @@
 </div>
 <!-- Calendar Feature End -->
 
-<!-- Calendar Script -->
+<!-- Booking Confirmation Modal -->
+<!-- Edit Review Modal -->
+<div id="editReviewModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-card card" style="position:relative; max-width:640px;">
+    <button class="modal-close" aria-label="Close" onclick="closeEditReview()"><i class="fas fa-times"></i></button>
+    <h3 style="margin-top:0; font-family:'Playfair Display', serif;">Edit Your Review</h3>
+    <form id="editReviewForm" onsubmit="saveEditedReview(event)">
+      <input type="hidden" id="editReviewId" value="">
+      <div class="form-group">
+        <label for="editReviewTitle">Title</label>
+        <input type="text" id="editReviewTitle" required placeholder="Short title for your review">
+      </div>
+      <div class="form-group">
+        <label for="editReviewText">Review</label>
+        <textarea id="editReviewText" rows="6" required placeholder="Update your review text..."></textarea>
+      </div>
+      <div class="form-group" style="text-align:center;">
+        <label style="display:block; margin-bottom:8px;">Rating</label>
+        <div class="rating" role="radiogroup" aria-label="Edit rating (1-5)">
+          <input type="radio" name="edit-rating" id="edit-star5" value="5"><label for="edit-star5" title="5 stars"><i class="fa fa-star" aria-hidden="true"></i></label>
+          <input type="radio" name="edit-rating" id="edit-star4" value="4"><label for="edit-star4" title="4 stars"><i class="fa fa-star" aria-hidden="true"></i></label>
+          <input type="radio" name="edit-rating" id="edit-star3" value="3"><label for="edit-star3" title="3 stars"><i class="fa fa-star" aria-hidden="true"></i></label>
+          <input type="radio" name="edit-rating" id="edit-star2" value="2"><label for="edit-star2" title="2 stars"><i class="fa fa-star" aria-hidden="true"></i></label>
+          <input type="radio" name="edit-rating" id="edit-star1" value="1"><label for="edit-star1" title="1 star"><i class="fa fa-star" aria-hidden="true"></i></label>
+        </div>
+      </div>
+      <div style="display:flex; gap:12px; margin-top:12px;">
+        <button type="submit" class="btn primary" style="flex:1;">Save Changes</button>
+        <button type="button" class="btn google-btn" onclick="closeEditReview()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div id="bookingConfirmModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-card card" style="position:relative; max-width:580px;">
+    <button class="modal-close" aria-label="Close" onclick="closeBookingConfirm()">
+      <span>&times;</span>
+    </button>
+    <h3 style="margin-top:0; font-family:'Playfair Display', serif;">Confirm Your Booking</h3>
+    <div style="margin-top:15px;">
+      <h4 style="font-family:'Playfair Display',serif; margin:0 0 12px;">Booking Details</h4>
+      <div class="booking-confirm-details" style="display:grid; gap:8px; padding:15px; background:var(--accent-light); border-radius:12px;">
+        <p style="margin:0;"><strong>Room:</strong> <span id="confirm-room"></span></p>
+        <p style="margin:0;"><strong>Guest Name:</strong> <span id="confirm-name"></span></p>
+        <p style="margin:0;"><strong>Email:</strong> <span id="confirm-email"></span></p>
+        <p style="margin:0;"><strong>Check-in:</strong> <span id="confirm-checkin"></span></p>
+        <p style="margin:0;"><strong>Check-out:</strong> <span id="confirm-checkout"></span></p>
+        <p style="margin:0;"><strong>Guests:</strong> <span id="confirm-guests"></span></p>
+        <p style="margin:0;"><strong>Airport Pickup:</strong> <span id="confirm-airport"></span></p>
+        <p style="margin:0;"><strong>Payment Option:</strong> <span id="confirm-payment"></span></p>
+        <p style="margin:0; font-size:1.1em;"><strong>Total Amount:</strong> <span id="confirm-total" class="accent" style="font-weight:700;"></span></p>
+        <p style="margin:4px 0 0; font-size:1.1em;"><strong>Due Today:</strong> <span id="confirm-deposit" class="accent" style="font-weight:700;"></span></p>
+      </div>
+    </div>
+    <div style="display:flex; gap:12px; margin-top:20px;">
+      <button class="btn primary" style="flex:1;" onclick="proceedWithBooking()">Confirm & Continue</button>
+      <button class="btn google-btn" onclick="closeBookingConfirm()">Edit Details</button>
+    </div>
+    <p class="muted" style="font-size:0.9em; margin:12px 0 0;">Next step: Login or sign up to complete your booking.</p>
+  </div>
+</div><!-- Calendar Script -->
 <script src="calendar.js" defer></script>
 
 </body>

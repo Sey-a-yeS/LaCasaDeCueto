@@ -2337,5 +2337,58 @@
 </div><!-- Calendar Script -->
 <script src="calendar.js" defer></script>
 
+<script>
+window.addEventListener("load", () => {
+  const bookingForm = document.getElementById("bookingForm");
+
+  if (!bookingForm) {
+    console.error("⚠️ Booking form not found in DOM!");
+    return;
+  }
+
+  console.log("✅ Booking form found and ready.");
+
+  bookingForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    console.log("📤 Sending booking...");
+
+    const formData = {
+      roomCode: document.getElementById("selected-room").textContent.trim(),
+      name: document.getElementById("name").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      guests: document.getElementById("guests").value,
+      checkin: document.getElementById("checkin").value,
+      checkout: document.getElementById("checkout").value,
+      airportPickup: document.getElementById("airport").checked,
+      fullPayment: document.getElementById("fullPayment").checked
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("✅ Booking successfully saved!");
+        console.log("✅ Server response:", data);
+        bookingForm.reset();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        alert("❌ Booking failed: " + (data.error || "Unknown error"));
+        console.error("Server error:", data);
+      }
+    } catch (error) {
+      console.error("⚠️ Could not connect to server:", error);
+      alert("⚠️ Could not connect to server. Make sure backend is running.");
+    }
+  });
+});
+</script>
+
 </body>
 </html>
